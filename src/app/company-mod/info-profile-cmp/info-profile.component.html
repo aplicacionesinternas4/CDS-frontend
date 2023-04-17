@@ -1,0 +1,141 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="https://centrodeservicios.helisa.com/images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <!--<a href="javascript:void(0)">Nombre de la company</a>-->
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+  </div>
+</div>
+
+<div class="admin-profile text-center">
+  <div>
+    <div>
+      <div class="pull-left">
+        <h3 class="text-left" *ngIf="profile?.nombre1 != null"> {{ profile?.nombre1}}</h3>
+        <h3 class="text-left" *ngIf="profile?.nombre1 == null"> -Sin Nombre de Empresa-</h3>
+        <h6 class="text-left" *ngIf="profile?.ciudad != null">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" width="7.2px" height="8.9px"
+            viewBox="0 0 7.2 8.9" enable-background="new 0 0 7.2 8.9" xml:space="preserve">
+            <path fill="#999999"
+              d="M3.6,0C1.6,0,0,1.6,0,3.6c0,3.1,3.6,5.3,3.6,5.3s3.6-2.2,3.6-5.3C7.2,1.6,5.6,0,3.6,0z M3.6,5.1
+                                                      c-0.9,0-1.7-0.8-1.7-1.7c0-0.9,0.8-1.7,1.7-1.7s1.7,0.8,1.7,1.7C5.3,4.3,4.5,5.1,3.6,5.1z" />
+          </svg>
+
+          {{profile?.ciudadObj?.nombre}}-{{profile?.ciudadObj?.departamento?.nombre}},{{profile?.paisObj?.nombre}}
+        </h6>
+        <h6 class="text-left" *ngIf="profile?.ciudad == null">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" x="0px" y="0px" width="7.2px" height="8.9px"
+            viewBox="0 0 7.2 8.9" enable-background="new 0 0 7.2 8.9" xml:space="preserve">
+            <path fill="#999999"
+              d="M3.6,0C1.6,0,0,1.6,0,3.6c0,3.1,3.6,5.3,3.6,5.3s3.6-2.2,3.6-5.3C7.2,1.6,5.6,0,3.6,0z M3.6,5.1
+                                                      c-0.9,0-1.7-0.8-1.7-1.7c0-0.9,0.8-1.7,1.7-1.7s1.7,0.8,1.7,1.7C5.3,4.3,4.5,5.1,3.6,5.1z" />
+          </svg>
+
+          -Sin Lugar-
+        </h6>
+      </div>
+      <div class="pull-right">
+        <a class="pull-left" (click)="goToEdit()">
+          <span class="icon"></span>
+          Editar
+        </a>
+        <a class="icon" (click)="enviarAprovado(profile?.email, 1 , profile?.nit, profile?.nombre1)" *ngIf="enviarinfo">
+          <img src="../../../images/aceptar.png" alt="" style="max-width: 20px; max-height: 20px; border: none;">
+        </a>
+        <a class="icon" (click)="enviarAprovado(profile?.email, 2 , profile?.nit, profile?.nombre1)" *ngIf="enviarinfo">
+          <img src="../../../images/cancelar.png" alt="" style="max-width: 20px; max-height: 20px; border: none;">
+        </a>
+      </div>
+    </div>
+    <br><br><br>
+    <img src="images/bg-colors.png">
+  </div>
+  <h2>Datos de la Empresa</h2>
+  <ul class="list-unstyled">
+    <li>Empresa</li>
+    <li *ngIf="profile?.nombre1 != null"> {{ profile?.nombre1}}</li>
+    <li *ngIf="profile?.nombre1 == null"> -Sin Nombre de Empresa-</li>
+    <li>Tipo Documento</li>
+    <li *ngIf="profile?.tipoDocumentoObj.tipo != null"> {{ profile?.tipoDocumentoObj.tipo}}</li>
+    <li *ngIf="profile?.tipoDocumentoObj.tipo == null"> -Sin Tipo Documento-</li>
+    <li>Identificación</li>
+    <li *ngIf="profile?.nit != null"> {{ profile?.nit}}</li>
+    <li *ngIf="profile?.nit == null"> -Sin Identificación-</li>
+    <li>Dirección</li>
+    <li *ngIf="profile?.direccion != null"> {{ profile?.direccion}}</li>
+    <li *ngIf="profile?.direccion == null"> -Sin Dirección-</li>
+    <li>Correo <span>Electronico</span></li>
+    <li *ngIf="profile?.email != null"> {{ profile?.email}}</li>
+    <li *ngIf="profile?.email == null"> -Sin Correo-</li>
+    <li>Regimen</li>
+    <li *ngIf="profile?.regimenObj?.nombre != null"> {{ profile?.regimenObj?.nombre}}</li>
+    <li *ngIf="profile?.regimenObj?.nombre == null"> -Sin Regimen-</li>
+    <li>Teléfono</li>
+    <li *ngIf="profile?.telefono != null"> {{ profile?.telefono}}</li>
+    <li *ngIf="profile?.telefono == null"> -Sin Teléfono-</li>
+  </ul>
+  <h2>Datos de Facturación Electronica</h2>
+  <ul class="list-unstyled">
+    <li>Nombre del responsable</li>
+    <li>{{userBilling.name}}</li>
+    <li>Telefono</li>
+    <li>{{userBilling.phone}}</li>
+    <li>Cargo</li>
+    <li>{{userBilling.position}}</li>
+    <li>Correo electrónico</li>
+    <li>{{userBilling.email}}</li>
+  </ul>
+</div>
+
+<div class="admin-profile text-center">
+  <div *ngIf="validationButton">
+    <h4><a (click)="goToHistorialFacturation()" class="a_label">Historial de Compra</a></h4>
+  </div>
+  <br>
+  <h4><a (click)="goToHistorialChanges()" class="a_label">Historial de Cambios</a></h4>
+
+  <br><br>
+</div>

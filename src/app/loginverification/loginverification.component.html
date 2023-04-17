@@ -1,0 +1,42 @@
+<!-- LOGIN FORM -->
+<div  style="max-width: 4000px; ">
+<div><h5 style="text-align: center;">Por favor digite su usuario y contraseña para continuar</h5></div>
+<div id="login-form" class="" style="max-width: 900px;">
+  <form novalidate (ngSubmit)="submit(login)" #login="ngForm" class="col-xs-12" style="max-width: 600px;">
+    <div>
+      <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!loginError">
+        <h5 id="lb-login-error">Los datos registrados no coinciden </h5>
+      </div>
+      <div id="div-login-person" class="form-group" style="max-width: 1000px;">
+        <div class="material-input " [class.has-error]="!username.valid && !username.pristine" style="max-width: 1000px;">
+          <input type="text" name="email" id="tb-login-user"  (oninvalid)="validateFileds();" required [(ngModel)]="usernameLogin"  #username="ngModel" style="max-width: 1000px;">
+          <label>
+            <span>Usuario</span>
+          </label>
+          <span class="help-block text-left">Correo electronico requerido.</span>
+        </div>
+      </div>
+      <div id="div-login-key" class="form-group pull-left full-width mb-8">
+        <div class="material-input " [class.has-error]="!password.valid &&!password.pristine" >
+          <input type="password" focus-me="true" required name="password" id="tb-login-password" required [(ngModel)]="model.password" #password="ngModel">
+          <label>
+            <span>Contraseña</span>
+          </label>
+          <span class="help-block text-left">Password requerido.</span>
+        </div>
+      <!--[disabled]="!login.form.valid"-->
+      <div id="registry" class="registry-btn pull-right">     
+        <br>                         
+        <h4>
+          <button type="submit" id="btn-session" style="font-size: 15px!important;color: #266494;background: #e4e4e4;margin: -12% 0% 0% -20% !important; margin-left: 100%;" class="light-blue-button" >INGRESAR</button>        
+        </h4>  
+        <h4>
+          <button id="btn-ocultar" style="display: none;"data-dismiss="modal" >ocultar</button>        
+        </h4>                                                 
+     </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+</div>

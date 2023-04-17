@@ -1,0 +1,7 @@
+.change-cursos-disable{
+  cursor: default;
+}
+
+.change-cursos-enable{
+  cursor: pointer;
+}

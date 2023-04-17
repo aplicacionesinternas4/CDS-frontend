@@ -1,0 +1,37 @@
+.disable{
+  opacity: .65;
+}
+
+.selects {
+  text-transform: none;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid #cfcfcf;
+  padding-bottom: 9;
+}
+
+.check p {
+  width: calc(100% - 30px);
+  font-size: 14px;
+  float: right;
+  margin: 2px 0 0;
+}
+.check p a {
+  font-family: "robotoregular";
+  color: #e6007e
+}
+.check p + span {
+  display: none;
+  font-weight: bold;
+}
+
+.check.has-error p a {
+  color: #e6007e !important;
+}
+.check.has-error p + span {
+  display: block;
+}
+.img{
+  width:200px;
+  height:40px;
+}

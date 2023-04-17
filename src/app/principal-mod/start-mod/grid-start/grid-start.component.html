@@ -1,0 +1,204 @@
+<div class="bottom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h2>Historial de Transacciones</h2>
+    </div>
+    <div class="col-sm-6 col-xs-12">
+      <form>
+        <div>
+          <h5 class="pull-right">
+            <a class="download-history" (click)="exportExcel()">
+              <span class="icon"></span>
+              <span class="hidden-xs">Descarga</span>
+            </a>
+          </h5>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="scrollBar scrollbar-vertical">
+    <div class="scrollBar-mask"></div>
+    <div class="scrollBar-wrap">
+      <table class="table table-hover" id="historialCompras">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Referencia</th>
+            <th class="visible-md visible-lg">Servicio</th>
+            <th>Concepto</th>
+            <th class="hidden-xs">Asesor</th>
+            <th>Valor Producto</th>
+            <th>IVA</th>
+            <th>ReteIVA</th>
+            <th>ReteICA</th>
+            <th>Cantidad</th>
+            <th>Valor Total</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let movimiento of viewerModel let i = index" (click)="getMovimientoDetail(i)">
+            <td>{{movimiento.fecha | date : "dd/MM/yyyy" }}</td>
+            <td>{{movimiento.referencia}}</td><!--Referencia-->
+            <td class="hidden-xs">{{movimiento.descripcion}}</td><!--Description-->
+            <td *ngIf="movimiento.concepto == -1">Descuento</td><!--Concepto-->
+            <td *ngIf="movimiento.concepto == 1">Compra</td><!--Concepto-->
+            <td *ngIf="movimiento.empleado != null" class="hidden-xs">{{movimiento.empleado}}</td>
+            <td *ngIf="movimiento.empleado == null" class="hidden-xs">Sistema</td>
+            <td>{{movimiento.valorProducto}}</td><!--Valor unitario (Valor Producto)-->
+            <td>{{movimiento.iva}}</td><!--IVA-->
+            <td>{{movimiento.reteIva}}</td><!--ReteIVA-->
+            <td>{{movimiento.reteIca}}</td> <!--ReteICA-->
+            <td>{{movimiento.cantidad}}</td>
+            <td>{{movimiento.valorTotal}}</td><!--Monto toca re-organizar porque el monto falla-->
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="emptyList" class="empty-case">
+        <span class="icon"></span>
+        <h4>No hay información</h4>
+      </div>
+      <div *ngIf="loading" class="load-wrap">
+        <div class="load"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#billing-information-modal"
+  style="position: fixed; top: 0px; left: 0;" #buttonShowPopup>
+
+</button>
+
+<!-- Modal -->
+<div class="modal login fade" data-backdrop="static" data-keyboard="false" id="billing-information-modal" tabindex="-1"
+  role="dialog" aria-labelledby="billing-information-modal">
+  <div class="modal-dialog big">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!--<button type="button" data-dismiss="modal">
+              <span></span>
+          </button>-->
+        <form role="form" (ngSubmit)="save()">
+          <h2 class="text-left">Datos de Facturación Electrónica</h2>
+          <div class="text-left" style="display: inline-block">
+
+            <div class="col-xs-12">
+              <p>
+                PROASISTEMAS S.A. ha dispuesto para sus clientes la emisión electrónica de la factura de venta según la
+                Resolución N° 006290 del 18 de agosto de 2017 expedida por la DIAN, de acuerdo a las condiciones del
+                Decreto 2242 de 2015 que la regula, usted podrá consultar estos documentos a través del centro de
+                servicios Helisa, sección Facturas o en su defecto, mediante un link enviado por correo electrónico
+                junto al usuario y contraseña de acceso al portal de consulta.
+              </p>
+              <p>
+                En dichos portales podrá verificar y descargar la factura y estará disponible al menos por 3 meses
+                después de la fecha de emisión. En caso de ser necesario la impresión de este documento, la
+                visualización del documento se adapta a la configuración de la impresora que tenga instalada.
+              </p>
+              <p>
+                Lo invitamos a complementar la información de contacto relacionada con la factura electrónica.
+              </p>
+            </div>
+
+            <div class="col-xs-12 col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="userBilling.name" name="userbillingName">
+                <label>
+                  <span>Nombre del responsable</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input">
+                <input type="number" required="" [(ngModel)]="userBilling.phone" name="userbillingPhone">
+                <label>
+                  <span>Télefono</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="userBilling.position" name="userbillingPosition">
+                <label>
+                  <span>Cargo</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input"
+                [class.has-error]=" !emailBilling.pristine && (!emailBilling.valid  || !validEmail(userBilling.email))">
+                <input type="text" required="" [(ngModel)]="userBilling.email" name="emailBilling"
+                  #emailBilling="ngModel">
+                <label>
+                  <span>Correo Electronico</span>
+                </label>
+                <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="check pull-left">
+                <input type="checkbox" value="None" id="cds-check-1" [(ngModel)]="checkedTerms" name="terms">
+                <label for="cds-check-1"></label>
+                <p>Acepto que mi información puede ser usada de acuerdo a los <a
+                    href="http://helisa.com/terminos-y-condiciones.php" target="_blank">Términos y Condiciones</a> y su
+                  <a href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Políticas
+                    de
+                    Tratamientos de Datos Personales</a></p>
+              </div>
+            </div>
+
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn" tabindex="13">Guardar</button>
+          </div>
+        </form>
+        <a href="javascript:void(0)" data-dismiss="modal" style="position: fixed; top: 0px; left: 0;"
+          #buttonHidePopup></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--SCORPIO-->
+<!-- MODAL -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal_informacion"
+  style="position: fixed; top: 0px; left: 0;" #buttonResponsabilidad>
+</button>
+<!-- Modal -->
+<div class="modal login fade" data-backdrop="static" data-keyboard="false" id="modal_informacion" tabindex="-1"
+  role="dialog" aria-labelledby="modal_informacion">
+  <div class="modal-dialog big">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!--<button type="button" data-dismiss="modal">
+              <span></span>
+          </button>-->
+        <form role="form">
+          <h2 class="text-left">Datos de Facturación Electrónica</h2>
+          <div class="text-left" style="display: inline-block">
+
+            <div class="col-xs-12">
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil harum, minima fuga veritatis 
+                hic debitis impedit vitae repellat aliquam numquam dolorum nobis, nulla soluta.
+                Tenetur accusamus quasi placeat quis id?
+              </p>
+            </div>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn" tabindex="13" data-dismiss="modal">messirve</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

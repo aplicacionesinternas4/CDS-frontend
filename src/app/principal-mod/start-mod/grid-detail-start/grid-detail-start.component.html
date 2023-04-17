@@ -1,0 +1,29 @@
+<div class="bottom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 pull-right">
+      <form>
+        <div class="back">
+          <a (click)="getGrid()"></a>
+        </div>
+        <div>
+          <h5 class="pull-right">
+            <a class="download-history" onclick="window.print();">
+              <span class="icon"></span>
+              <span class="hidden-xs">Descarga</span>
+            </a>
+          </h5>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6 col-xs-12 pull-left">
+      <h2>{{movimiento.servicio.descripcion}}</h2>
+    </div>
+  </div>
+  <div class="box-settings">
+    <p><b>{{movimiento.servicio.descripcion}}</b></p>
+    <p><b> Servicio registrado el {{movimiento.fecha | date : fullDate }}</b></p>
+    <p><b>Atendido por {{movimiento.empleado}}</b></p>
+    <p><b>transaccion por {{movimiento.puntos}} minutos</b></p>
+    <p>{{movimiento.observacion}}</p>
+  </div>
+</div>

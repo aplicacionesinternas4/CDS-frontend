@@ -1,0 +1,26 @@
+<div class="top m-7">
+  <a class="back-btn" (click)="back()">
+    <span class="icon"></span>
+  </a>
+  <h5 class="pull-left">
+    <a href="javascript:void(0">{{user?.nombre1}}</a>
+  </h5>
+  <h5 class="pull-right">
+    <a class="close-session" href="javascript:void(0)">
+      <span class="icon"></span>
+      <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+    </a>
+  </h5>
+  <div class="admin-shopping pull-right" (blur)="focusOutFunction()">
+    <div class="">
+      <a class=" shopping-cart" id="dropdownMenu1"  aria-haspopup="true" aria-expanded="false" (click)="getOpen()">
+        <span class="icon"></span>
+        <span class="number" *ngIf="shoppingCarService?.listServices.length>0">{{shoppingCarService?.listServices.length}}</span>
+      </a>
+
+      <div *ngIf="open" class="dropdown-back-drop" (click)="close()" > </div>
+
+      <app-shopping-car [isPopup]="true"></app-shopping-car>
+    </div>
+  </div>
+</div>

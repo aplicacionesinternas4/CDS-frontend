@@ -1,0 +1,123 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="https://centrodeservicios.helisa.com/images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <!--<a href="javascript:void(0)">Nombre de la company</a>-->
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+    <div class="bottom">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h2>Historial de Compras</h2>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <form>
+            <div >
+              <h5 class="pull-right">
+                <a class="download-history" (click)="exportExcel()">
+                  <span class="icon"></span>
+                  <span class="hidden-xs">Descargar</span>
+                </a>
+              </h5>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="scrollBar scrollbar-vertical" >
+        <div class="scrollBar-wrap">
+          <table class="table table-hover" id="historialCompras">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Referencia</th>
+                <th class="visible-md visible-lg">Servicio</th>
+                <th>Concepto</th>
+                <th class="hidden-xs">Asesor</th>
+                <th>Valor Producto</th>
+                <th>IVA</th>
+                <th>ReteIVA</th>
+                <th>ReteICA</th>
+                <th>Cantidad</th>
+                <th>Valor Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let movimiento of viewerModel let i = index">
+                <!--(click)="getMovimientoDetail(i)"-->
+                <td>{{movimiento.fecha | date : "dd/MM/yyyy" }}</td>
+                <td>{{movimiento.referencia}}</td>
+                <!--Referencia-->
+                <td class="hidden-xs">{{movimiento.descripcion}}</td>
+                <!--Description-->
+                <td *ngIf="movimiento.concepto == -1">Descuento</td>
+                <!--Concepto-->
+                <td *ngIf="movimiento.concepto == 1">Compra</td>
+                <!--Concepto-->
+                <td *ngIf="movimiento.empleado != null" class="hidden-xs">{{movimiento.empleado}}</td>
+                <td *ngIf="movimiento.empleado == null" class="hidden-xs">Sistema</td>
+                <td>{{movimiento.valorProducto}}</td>
+                <!--Valor unitario (Valor Producto)-->
+                <td>{{movimiento.iva}}</td>
+                <!--IVA-->
+                <td>{{movimiento.reteIva}}</td>
+                <!--ReteIVA-->
+                <td>{{movimiento.reteIca}}</td>
+                <!--ReteICA-->
+                <td>{{movimiento.cantidad}}</td>
+                <td>{{movimiento.valorTotal}}</td>
+                <!--Monto toca re-organizar porque el monto falla-->
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="emptyList" class="empty-case">
+            <span class="icon"></span>
+            <h4>No hay información</h4>
+          </div>
+          <div *ngIf="loading" class="load-wrap">
+            <div class="load"></div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>

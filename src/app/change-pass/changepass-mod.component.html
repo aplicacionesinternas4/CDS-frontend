@@ -1,0 +1,48 @@
+
+<header></header>
+<section>
+<div id="dujo-login-container" class="container kansas-login text-center center-login">          
+    <div id="dujo-login-content" class="row">
+      <img src="/assets/img/logo.png">
+        <div id="change-password" >
+            <p>Señor usuario por su seguiridad la plataforma le solicitara cambio de contraseña nuevamente, le informamos que este proceso se realizara trimestralmente por su seguiridad tambien informamos que  no se puede ingresar la contraseña anterior ya que el programa restringe el registro de una clave anterior.</p>
+            <form class="col-xs-4 col-xs-offset-4" #recoveryForm="ngForm" (ngSubmit)="sendRecovery()">
+            <div id="div-change-error" class="form-group text-left has-error hidden" [class.hidden]="recoveryError==''">
+                <h5 id="lb-change-error">{{ recoveryError }}</h5>
+            </div>
+            <div class="form-group pull-left full-width" [class.has-error]="!recoveryPass.valid&&!recoveryPass.pristine">
+                <div class="material-input " [class.has-error]="!recoveryPass.valid&&!recoveryPass.pristine">
+                <input type="password" required="" id="tb-change-password"  name="pass" required [(ngModel)]="recoveryModel.password" #recoveryPass="ngModel">
+                <label for="tb-change-password">
+                    <span>Nueva Contraseña</span>
+                </label>
+                <span class="help-block text-left" for="tb-change-password">La contraseña es obligatoria</span>
+                </div>
+            </div>
+            <div class="form-group pull-left full-width" [class.has-error]="!recoveryPassConfirm.valid&&!recoveryPassConfirm.pristine">
+                <div class="material-input " [class.has-error]="!recoveryPassConfirm.valid&&!recoveryPassConfirm.pristine">
+                <input type="password" required="" id="tb-change-cPassword" name="passConfirm" required [(ngModel)]="recoveryModel.passwordConfirm" #recoveryPassConfirm="ngModel">
+                <label for="tb-change-cPassword">
+                    <span>Confirmar Contraseña</span>
+                </label>
+                <span class="help-block text-left"  for="tb-change-cPassword">La confirmación de contraseña es obligatoria</span>
+                </div>
+            </div>
+            <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!Errorcharacters">
+                <h5 id="lb-login-error">La contraseña debe tener Minimo 8 caracteres, una mayuscula o una minuscula , un número y un caracter especial</h5>
+            </div>
+            <h4 class="pull-right"><button id="btn-change" class="light-blue-button" type="submit"  [disabled]="!recoveryForm.form.valid">GUARDAR</button></h4>
+            </form>
+        </div>    
+    </div>    
+</div>        
+</section>
+
+
+<footer>
+    <div class="container text-center">
+        <h6>© 2016 Helisa. Todos los derechos reservados | <a href="http://helisa.com/terminos-y-condiciones.php" target="_blank">Términos y Condiciones</a> - <a href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Aviso Legal</a></h6>
+        <h6>v1.0</h6>
+    </div>
+</footer>
+

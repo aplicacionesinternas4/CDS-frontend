@@ -1,0 +1,16 @@
+/*div:nth-child(2){
+  padding-left: 0px;
+}*/
+div:nth-child(1){
+  padding-right: 0px;
+}
+
+._importP{
+  color: #EC008C !important;
+}
+
+@media (min-width: 768px) {
+  div:nth-child(2){
+    padding-left: 0px;
+  }
+}

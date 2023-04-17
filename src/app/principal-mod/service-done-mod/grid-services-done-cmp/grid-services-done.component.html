@@ -1,0 +1,127 @@
+<div class="modal fade" id="Canrequest" tabindex="-1" role="dialog" aria-labelledby="technicalVisit" aria-hidden="true">
+  <div class="modal-dialog big">
+      <div class="modal-content">
+        <div class="modal-body p2">
+          <button type="button" id="closeModal" data-dismiss="modal">
+            <span></span>
+          </button>
+            <form  role="form" class="row text-center" (ngSubmit)="validateProvaide(ProvaideFrom)" #ProvaideFrom="" *ngIf="submit == true" >
+              <div class="admin-form">   
+                <h2 class="pull-left full-width text-center">¿Esta seguro de querer cancelar su solicitud?</h2>
+                  <h5 class="text-left mt-5" >
+                     
+                      <textarea ref-textarea [(ngModel)]="request.descripcion" [ngModelOptions]="{standalone: true}" rows="4" class="txtObservacion"></textarea>
+                  </h5>                         
+              </div>
+              <div>
+              <div class="button-p">
+                  <button onclick="$('#Canrequest').modal('hide');$('#cancServi').modal('show');" id="btn3"  class="btn gray m-0 m-left">Aceptar</button>
+              </div>
+              <div class="button-p" >
+                  <button class="btn gray" id="btn2" data-dismiss="modal" >Cancelar</button >
+              </div>
+            </div>
+            </form>
+              <div *ngIf="submit == false ">
+                <div class="admin-form">   
+                    <h2 class="pull-left full-width text-center">No se puede enviar su solicitud debio a que </h2>
+                        <h5 class="text-left mt-5" >
+                          Usted no tiene servicios para cancelar 
+                        </h5>                         
+                </div>
+                <div class="button-p" >
+                    <button class="btn gray m-0 m-left" data-dismiss="modal" >Aceptar</button >
+                </div>
+              </div> 
+             </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="cancServi" tabindex="-1" role="dialog" aria-labelledby="technicalVisit" aria-hidden="true">
+    <div class="modal-dialog big">
+        <div class="modal-content">
+          <div class="modal-body p2">
+            <div >
+              <div class="admin-form">   
+                  <h2 class="pull-left full-width text-center">Estado de cancelacion de sercvicio</h2>
+                      <h5 class="text-left mt-5" >
+                        Su solicitud fue cancelada correctamente  
+                      </h5>                         
+              </div>
+              <div class="button-p" >
+                  <button class="btn gray m-0 m-left" data-dismiss="modal" >Aceptar</button >
+              </div>
+            </div> 
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+<div class="bottom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h2>Solicitudes Realizadas</h2>
+    </div>
+    <div class="col-sm-6 col-xs-12">
+      <form>
+        <div>
+          <h5 class="pull-right">
+            <a class="download-history" onclick="window.print();">
+              <span class="icon"></span>
+              <span>Descarga</span>
+            </a>
+          </h5>
+        </div>
+      </form>
+       
+     <h5 class="pull-right">
+        <div class="contenedor1">
+          <a class="download-history" data-toggle="modal" (click)="validateRequest(requestForm)" #requestForm="" data-target="#Canrequest">
+            <img id="img7" src="/assets/images/Cancelar.jpg" alt="">
+            <span>Cancelar Solicitud</span>
+          </a>
+        </div>       
+      </h5>
+     
+    </div>
+  </div>
+  <div class="scrollBar scrollbar-vertical">
+    <div class="scrollBar-mask"></div>
+    <div class="scrollBar-wrap">
+      <table class="table table-hover">
+      <thead>
+      <tr>
+        <th>Fecha</th>
+        <th class="visible-md visible-lg">Observaciones</th>
+        <th>Tema</th>
+        <th>Estado</th>
+        <th class="hidden-xs">Asesor</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let serviceDone of servicesDone let i = index " (click)="getServiceDone(i)">
+        <td>{{serviceDone.fechaRegistro | date : "dd/MM/yyyy"}}</td>
+        <td class="visible-md visible-lg">{{serviceDone.observaciones}}</td>
+        <td>{{serviceDone.temaObj.nombre}}</td>
+        <td *ngIf="serviceDone?.estado == 0">Nuevo</td>
+        <td *ngIf="serviceDone?.estado == 1">Conflicto</td>
+        <td *ngIf="serviceDone?.estado == 2">Realizado</td>
+        <td *ngIf="serviceDone?.estado == 4">En proceso</td>
+        <td class="hidden-xs">{{serviceDone.asesor}}</td>
+      </tr>
+      </tbody>
+    </table>
+      <div *ngIf="emptyList" class="empty-case">
+        <span class="icon"></span>
+        <h4>No hay información</h4>
+      </div>
+
+      <div *ngIf="loading" class="load-wrap">
+        <div class="load"></div>
+      </div>
+    </div>
+  </div>
+
+</div>

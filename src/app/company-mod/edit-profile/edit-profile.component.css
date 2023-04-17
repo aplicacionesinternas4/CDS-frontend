@@ -1,0 +1,41 @@
+.material-input input[type="number"]::-webkit-inner-spin-button,
+.material-input input[type="number"]::-webkit-outer-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.selects {
+  text-transform: none;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid #cfcfcf;
+  padding-bottom: 9;
+}
+
+.check p {
+  width: calc(100% - 30px);
+  font-size: 14px;
+  float: right;
+  margin: 0
+}
+
+.check p a {
+  font-family: "robotoregular";
+  color: #e6007e
+}
+.check p + span {
+  display: none;
+  font-weight: bold;
+}
+.pt-0 {
+  padding-top: 5px;
+}
+.check.has-error p {
+  color: #6b6b6b !important;
+}
+.check.has-error p a {
+  color: #e6007e !important;
+}
+.check.has-error p + span {
+  display: block;
+}

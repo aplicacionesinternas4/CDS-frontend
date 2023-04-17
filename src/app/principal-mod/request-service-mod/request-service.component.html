@@ -1,0 +1,166 @@
+<app-toast *ngIf="toast" [message]="toastMessage" [type]="toastType" ></app-toast>
+<div class="wrap-form">
+  <div >
+    <div class="buy">
+      <div class="row">
+        <div class="col-md-3 visible-md visible-lg">
+          <app-service-bar [orientation]="orientation"></app-service-bar>
+        </div>
+        <div class="col-xs-12 col-md-9">
+          <div class="admin-request-service">
+            <h2>Solicitar Servicio</h2>
+            <form  role="form" class="row text-center" (ngSubmit)="validateRequest(requestForm)" #requestForm="">
+              <div class="text-left">
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown">
+                    <label>Tipo de Servicio</label>
+                    <select class="selectpicker selects"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="true" tabindex="1" name="servicio" #registryName="ngModel" [(ngModel)]="request.servicio">
+                      <option *ngFor="let d of servicios" [ngValue]="d" >{{d.descripcion}}</option>
+                    </select> 
+
+                    <!--<input type="text" *ngFor="let d of servicios" value="{{d.descripcion}}">-->
+
+
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true"  [ngClass]="getErrorService()" #service tabindex="1">
+                      {{servicio?.descripcion}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" required >
+                      <li *ngFor="let service of servicios" (click)="servicio=service; request.servicio=service; notService=true" required><a>{{service?.descripcion}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown" >
+                    <label >Tema</label>
+                    <select class="selectpicker selects"  id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="true" tabindex="2" name="tema" #registryName="ngModel" [(ngModel)]="request.tema">
+                      <option *ngFor="let d of temas" [ngValue]="d">{{d.nombre}}</option>
+                    </select>
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true" [ngClass]="getErrorTheme()" tabindex="2">
+                      {{tema?.nombre}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li *ngFor="let theme of temas" (click)="tema=theme; request.tema = theme; notTheme = true"><a>{{theme?.nombre}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input" >
+                    <input type="text" [(ngModel)]="request.asesor" name="asesor" tabindex="3">
+                    <label>
+                      <span>Asesor</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown" >
+                    <label>Ciudad</label>
+                    <select class="selectpicker selects"  id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="true" tabindex="4" name="ciudad" #registryName="ngModel" [(ngModel)]="request.ciudad">
+                      <option *ngFor="let d of ciudades" [ngValue]="d">{{d.nombre}}-{{d.departamento.nombre}}</option>
+                    </select>
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu3" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true" [ngClass]="getErrorCity()" tabindex="4">
+                      {{ciudad?.nombre}}-{{ciudad?.departamento.nombre}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu3" >
+                      <li *ngFor="let cities of ciudades" (click)="ciudad=cities; request.ciudad=cities; notCity=true"><a>{{cities?.nombre}} - {{cities.departamento.nombre}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="material-input">
+                      <input type="number" required="" [(ngModel)]="request.telefono" name="telefono" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==7) return false;">
+                      <label >
+                        <span>Télefono Fijo (7 caracteres)</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="material-input">
+                      <input type="number"  [(ngModel)]="request.movil" name="telefono2" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;">
+                      <label >
+                        <span>Télefono Celuar (10 caracteres)</span>
+                      </label>
+                    </div>
+                  </div>         
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input">
+                    <input type="text" required="" [(ngModel)]="request.contactar" name="contactar" tabindex="6">
+                    <label>
+                      <span>Contactar a</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div class="material-input">
+                    <textarea required="" [(ngModel)]="request.descripcion" name="descripcion" tabindex="7"></textarea>
+                    <label>
+                      <span>Describir ampliamente su solicitud</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div *ngIf="submit == false">
+                    <button   data-toggle="modal" data-target="#encuesta" class="btn" type="submit" tabindex="9">Enviar</button>    
+                </div>
+                <div *ngIf="submit == true">
+                    <a  (click)="changeSubmit()" class="btn"  data-toggle="modal" data-target="#encuesta" tabindex="9">Enviar</a>      
+                </div>
+                
+              </div>
+            </form>
+            <div class="modal fade" id="encuesta" tabindex="-1" role="dialog" aria-labelledby="encuesta" aria-hidden="true">
+              <div class="modal-dialog big w-5" *ngIf="submit == true ">
+                    <div class="modal-content">
+                      <div class="modal-body p2">                      
+                        <button type="button" data-dismiss="modal">
+                          <span></span>
+                        </button>
+                        <div class="admin-form">
+                            <h2 class="pull-left full-width text-center">Solicitar Servicio</h2>
+                            <h5><span>Su solicitud fue enviada correctamente.</span></h5>
+                        </div>                        
+                        <div class="button-p"> 
+                            <button data-dismiss="modal" [routerLink]="['/company/secure/services-done/grid']" class="btn gray m-0 m-left" >Acepto Condiciones</button >                         
+                            <!--<button data-dismiss="modal" class="btn gray m-0" >Aceptar</button >-->
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+
+                <div class="modal-dialog big " *ngIf="submit == false || validate == false">
+                  <div class="modal-content">
+                    <div class="modal-body p2">
+                      <button type="button" data-dismiss="modal">
+                        <span></span>
+                      </button>
+                      <div class="admin-form">
+                          <h2 class="pull-left full-width text-center">Solicitar Servicio</h2>
+                          <div *ngIf="errorValidate != null">
+                              <h5><span>{{errorValidate}}</span></h5>
+                          </div>                                   
+                      </div>                        
+                      <div class="button-p">                          
+                          <button data-dismiss="modal" class="btn gray m-0" >Acepto</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

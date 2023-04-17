@@ -1,0 +1,117 @@
+<div class="col-md-3 visible-md visible-lg">
+  <app-service-bar [orientation]="orientation"></app-service-bar>
+</div>
+<div class="col-xs-12 col-md-9">
+  <div class="update-content consulting">
+    <ul class="list-unstyled pull-left full-width services-list">
+      <li  class="update-list">
+        <a  data-toggle="modal" data-target="#technicalVisit">Comprar</a>
+        <br><br><br>
+        <div [innerHTML]="service.textLong"></div>
+        <div *ngIf = "service.id == 6">
+          <div></div>
+          <p style="color: #EC008C;"><b>IMPORTANTE</b>: Si se requiere una visita presencial en ciudades diferentes a Bogotá, Cali, Medellín o Tunja, antes de realizar la compra por este medio le solicitamos  comunicarse con PROAsistemas al teléfono 495 48 00 opc. 1 o al correo ventas@helisa.com para validar términos y condiciones para la prestación de este servicio.</p>
+        </div>
+        <div *ngIf = "service.id == 5">
+          <br><br><br>
+          <br><br><br>
+          <br><br><br>
+          <br>
+          <div></div>
+          <p style="color: #EC008C;"><b>IMPORTANTE</b>: Si se requiere una visita presencial en ciudades diferentes a Bogotá, Cali, Medellín o Tunja, antes de realizar la compra por este medio le solicitamos  comunicarse con PROAsistemas al teléfono 495 48 00 opc. 1 o al correo ventas@helisa.com para validar términos y condiciones para la prestación de este servicio.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="modal fade" id="technicalVisit" tabindex="-1" role="dialog" aria-labelledby="technicalVisit" aria-hidden="true">
+    <div class="modal-dialog big">
+        <div class="modal-content">
+          <div class="modal-body p2">
+            <button type="button" data-dismiss="modal">
+              <span></span>
+            </button>
+            <div class="admin-form">
+              <div *ngIf="typeDetail == 4">
+
+                <h2 id="title1" class="pull-left full-width text-center">Leer esto, le conviene...</h2>
+                
+                 <h5 class="text-left mt-1" id="txt2">
+                   1. Antes de solicitar servicio, pregúntele a Helisa (página principal <a href="https://helisa.com/" target="_blank">www.helisa.com</a>) 
+                 </h5>
+                 
+                
+                 <a target="_blank" href="https://helisachat.mybluemix.net/" ><img src="images/Ventana.png" class="img1" > </a>
+                 <a target="_blank" href="/assets/manuales/HELISA_modalidades_de_soporte_2020.pdf" ><img src="images/Ventana2.png" class="img2" > </a>
+                <br>
+                <hr>
+                <h5 class="text-left mt-5" id="txt4"> Condiciones para la prestación del servicio: </h5>
+                <br>
+                <h5 class="text-left mt-5" id="txt1">
+                  Los Minutos adquiridos para SOPORTE REMOTO, tendrán una vigencia para su consumo de 1(un)año,contando desde su fecha de adquisicón.Los minutos no consumidos en el periodo de vigencia no serán renovados en el periodo siguiente.
+                </h5>
+                  <br>
+                  <h5 class="text-left mt-5" id="txt1">
+                      Este servicio se prestará a través de la plataforma que PROASISTEMAS S.A. defina en el momento de prestar el servicio.                                
+                  </h5>   
+                  
+              </div>
+              <div *ngIf="typeDetail == 5">
+                <h2 class="pull-left full-width text-center">Visita Técnica</h2>
+                <h5>¡IMPORTANTE!</h5>
+                  <h5 class="text-left">
+                      Las Horas adquiridas para el servicio de Visita Técnica tendrán una vigencia para su consumo
+                      de máximo 12 meses a partir de la fecha de compra, o antes si son consumidos en su totalidad, 
+                      lo primero que suceda. Los servicios no consumidos durante el periodo de vigencia (12 meses) 
+                      no serán renovados en el periodo siguiente.
+                  </h5>
+              </div>
+              <div *ngIf="typeDetail == 6">
+                <h2 class="pull-left full-width text-center">Implementación</h2>
+                <h5>¡IMPORTANTE!</h5>
+                  <h5 class="text-left">
+                      Las Horas adquiridas para el servicio de Implementación tendrán una vigencia
+                      para su consumo de máximo 12 meses a partir de la fecha de compra, o antes si
+                      son consumidos en su totalidad, lo primero que suceda. Los servicios no consumidos
+                      durante el periodo de vigencia (12 meses) no serán renovados en el periodo siguiente.
+                  </h5>
+              </div>
+            </div>
+            <div class="button-p" >
+                <button data-dismiss="modal" (click)="openPopup()" class="btn gray m-0" >Acepto Condiciones</button >
+            </div>
+            <div class=" button-b">
+              <button data-dismiss="modal"  class="btn gray m-0 m-right" >Cancelar</button >
+            </div>
+           </div>
+          </div>
+        </div>
+  </div>
+<!--<div class="modal fade in" id="technicalVisit" tabindex="" role="dialog" aria-labelledby="technicalVisitLabel"
+aria-hidden="false" style="display: block">
+
+
+"
+
+
+
+
+
+
+
+
+<div class="modal-dialog big">
+<div class="modal-content">
+  <div class="modal-body">
+    <button (click)="back()" type="button" data-dismiss="modal">
+      <span></span>
+    </button>
+    <div class="admin-form">
+      <h2 class="pull-left full-width text-center">jeje</h2>
+      <h5 *ngIf="!showFormInfoCreditCard && !showAceptar">jeje</h5>
+          <h6>buena mi perro</h6>
+    </div>
+   </div>
+  </div>
+</div>
+</div>*/-->

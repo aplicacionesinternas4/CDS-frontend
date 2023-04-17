@@ -1,0 +1,10 @@
+.selects {
+  text-transform: none;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid #cfcfcf;
+  padding-bottom: 9;
+}
+.m-7{
+  margin-top: 30px;
+}

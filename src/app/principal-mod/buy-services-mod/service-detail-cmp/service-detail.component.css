@@ -1,0 +1,79 @@
+#txt1{
+  font-size: 14px;
+}
+#txt2{
+  font-size: 19px;
+  color: gray;
+}
+.txt3{
+  color:#e5007e;
+  font-weight:bold;
+  font-size: 17px;
+  text-decoration: underline !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: solid !important;
+  text-decoration-color: #e5007e !important;
+}
+#txt4{
+  font-size: 17px;
+  color: rgb(65, 62, 62);
+  font-weight:bold;
+  text-align: center !important;
+}
+.f{
+  color: rgb(65, 62, 62);
+}
+.img1{
+  width: 670px;
+  position: relative;
+  left: 15px;
+  top: 10px;
+}
+.img2{
+  width: 670px;
+  position: relative;
+  left: 10px;
+  top: 10px;
+}
+#title1{
+  font-weight:bold;
+}
+
+.button-b{
+  position: relative;
+  right: -30px;
+  width: 50%;
+}
+.button-p{
+  position: relative;
+  top: 32px;
+  left: 130px;
+}
+
+div:nth-child(2){
+  padding-left: 0px;
+}
+div:nth-child(1){
+  padding-right: 0px;
+}
+.text-left{
+  text-align: left !important;
+  margin-bottom: 0px;
+}
+.pb-0{
+  margin-bottom: 10px; 
+}
+.p2{
+  padding-right: 24px !important; 
+}
+.button-p{
+  padding-left: 44.6rem;
+  margin: 0px;
+}
+.m-0{
+  margin: 0px;
+  margin-right: 0px;
+}
+.mt-2{
+  margin-top: 10px;
+}

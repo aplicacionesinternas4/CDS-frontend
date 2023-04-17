@@ -1,0 +1,961 @@
+<div class="payment-steps-container">
+  <ul class="list-unstyled list-inline payment-steps">
+    <li [class.active]="step==1">1</li>
+    <li [class.active]="step==2">2</li>
+    <li [class.active]="step==3">3</li>
+  </ul>
+  <!--
+  <div class="admin-form">
+    <div *ngIf="step == 3" class="wrap-form">
+      <div>
+        <div class="form-container">
+          <form role="form" class="row text-center">
+            <div>
+              <h3>{{messagePayOnline}}</h3>
+            </div>
+            <div class="text-center">
+              <a class="btn gray hidden">Cancelar</a>
+              <a class="btn" routerLink="/company/secure/start/grid">Finalizar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <form *ngIf="step!=3" role="form" style="padding-bottom: 46px;">
+      <div *ngIf="step==1" class="admin-description-section">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descripción del Pago</th>
+              <th>Cantidad</th>
+              <th class="text-center">Valor</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of shoppingCarService.listServices let i = index">
+              <td>{{s.description}}</td>
+              <td *ngIf='s.minutes != "-1"'>{{s.minutes}}</td>
+              <td *ngIf='s.minutes == "-1"'>{{s.accessQuantity}}</td>
+              <td class="text-center">{{s.basicPrice| currency:'USD':true:'2.2'}}</td>
+              <td><a (click)="deleteService(i)" class="remove-button"></a></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><b>Sub Total:</b></td>
+              <td></td>
+              <td class="text-center"><b>{{subtotal| currency:'USD':true:'2.2'}}</b></td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+        <img src="images/bg-colors.png">
+        <table class="table">
+          <thead>
+            <th></th>
+            <th class="text-center">Impuesto</th>
+            <th class="text-center">Valor</th>
+          </thead>
+          <tbody>
+            <tr *ngIf="showIva">
+              <td></td>
+              <td class="text-center">IVA </td>
+              <td class="text-center">{{totalIva| currency:'USD':true:'2.2'}}</td>
+            </tr>
+            <tr *ngIf='totalReteIva != 0'>
+              <td></td>
+              <td class="text-center">RETEIVA ({{profile.reteiva}})</td>
+              <td class="text-center">- {{totalReteIva| currency:'USD':true:'2.2'}}</td>
+            </tr>
+            <tr *ngIf="profile.reteica != ''">
+              <td></td>
+              <td *ngIf="selectICa" class="text-center">RETEICA <select (click)="getInfoCookies()" class="selectpicker" *ngIf="selectICa"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="5" #selectIcaName="ngModel"
+                  [(ngModel)]="valorSelect" name="selectIca">
+                  <option *ngFor="let dato of datosICA">{{dato}}</option>
+                </select>
+              </td>
+              <td *ngIf= "!selectICa" class="text-center">RETEICA ({{reteicaValue}}) </td>
+              <td class="text-center">- {{totalReteIca| currency:'USD':true:'2.2'}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><b>Pago Total:</b></td>
+              <td></td>
+              <td class="text-center"><b>{{shoppingCarService.total| currency:'USD':true:'2.2'}}</b></td>
+
+            </tr>
+          </tfoot>
+        </table>
+        <img src="images/bg-colors.png">
+      </div>
+      <div *ngIf="step==2" class="text-left">
+        <form #heroForm="ngForm" role="dataForm" class="row text-center" name="dataForm" id="dataForm"
+          (ngSubmit)="onClickNext(form)">
+          <h2 class="text-left">Datos de la Empresa</h2>
+          <div class="text-left">
+            <div class="col-xs-12">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="profile.nombre1" name="nombre1" tabindex="1">
+                <label>
+                  <span>Nombre de la Empresa *</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-xs-6">
+              <div class="dropdown material-dropdown" [class.has-error]="errorDocumentType">
+                <label>Tipo de documento *</label>
+
+                <select class="selectpicker selects" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="true" tabindex="2" name="tipoDocumento" #registryName="ngModel"
+                  [(ngModel)]="profile.tipoDocumentoObj.codigo">
+                  <option *ngFor="let d of documentsTypes" value="{{d.codigo}}">{{d.tipo}}</option>
+                </select>
+
+                <!-<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="true" tabindex="2">
+                  {{profile?.tipoDocumentoObj?.tipo}}
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li *ngFor="let d of documentsTypes"><a (click)="onSelectTypeDocument(d)">{{d.tipo}}</a></li>
+                </ul>->
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="profile.nit" name="Nit" tabindex="6">
+                <label>
+                  <span>Numero de Documento *</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="dropdown material-dropdown">
+                <label>Pais*</label>
+                <select class="selectpicker selects" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="true" tabindex="4" name="pais" #registryName="ngModel"
+                  [(ngModel)]="profile.paisObj.id">
+                  <option *ngFor="let d of paises" value="{{d.id}}">{{d.nombre}}</option>
+                </select>
+                <!-<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="3">
+                  <span class="caret"></span>
+                  {{profile.paisObj?.nombre}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li *ngFor="let pais of paises" (click)="profile.paisObj = pais; profile.pais = pais.href"><a>{{pais.nombre}}</a></li>
+                </ul>->
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="dropdown material-dropdown">
+                <label>Ciudad*</label>
+                <select class="selectpicker selects" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="true" tabindex="5" name="ciudad" #registryName="ngModel"
+                  [(ngModel)]="profile.ciudadObj.id">
+                  <option *ngFor="let d of ciudades" value="{{d.id}}">{{d.nombre}} - {{d.departamento.nombre}}</option>
+                </select>
+                <!-<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="4">
+                  <span class="caret"></span>
+                  {{profile.ciudadObj?.nombre}} - {{profile.ciudadObj?.departamento.nombre}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" >
+                  <li *ngFor="let ciudad of ciudades" (click)="profile.ciudadObj = ciudad; profile.ciudad = ciudad.href"><a>{{ciudad.nombre}} - {{ciudad.departamento.nombre}}</a></li>
+                </ul>->
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="profile.direccion" name="direccion" tabindex="9">
+                <label>
+                  <span>Dirección*</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input"
+                [class.has-error]=" ! email.pristine && (!email.valid  || !validEmail(profile.email))">
+                <input type="text" required="" [(ngModel)]="profile.email" name="email" #email="ngModel" tabindex="10">
+                <label>
+                  <span>Correo Electronico*</span>
+                </label>
+                <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="dropdown material-dropdown">
+                <label>Regimen*</label>
+                <select class="selectpicker selects" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="true" tabindex="8" name="regimen" #registryName="ngModel"
+                  [(ngModel)]="profile.regimenObj.id">
+                  <option *ngFor="let d of regimens" value="{{d.id}}">{{d.nombre}}</option>
+                </select>
+                <!-<a class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="11">
+                  <span class="caret"></span>
+                  {{profile.regimenObj?.nombre}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <li *ngFor="let regimen of regimens" (click)="profile.regimenObj=regimen; profile.regimen=regimen.href"> <a>{{regimen.nombre}}</a></li>
+                </ul>->
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="material-input">
+                <input type="text" required="" [(ngModel)]="profile.telefono" name="telefono" tabindex="7">
+                <label>
+                  <span>Télefono*</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+          <h2 class="text-left">Datos de Facturación Electrónica</h2>
+          <div class="text-left" style="display: inline-block">
+
+            <div class="col-xs-12">
+              <p>
+                PROASISTEMAS S.A. ha dispuesto para sus clientes la emisión electrónica de la factura de venta según la
+                Resolución N° 006290 del 18 de agosto de 2017 expedida por la DIAN, de acuerdo a las condiciones del
+                Decreto 2242 de 2015 que la regula, usted podrá consultar estos documentos a través del centro de
+                servicios Helisa, sección Facturas o en su defecto, mediante un link enviado por correo electrónico
+                junto al usuario y contraseña de acceso al portal de consulta.
+              </p>
+              <p>
+                En dichos portales podrá verificar y descargar la factura y estará disponible al menos por 3 meses
+                después de la fecha de emisión. En caso de ser necesario la impresión de este documento, la
+                visualización del documento se adapta a la configuración de la impresora que tenga instalada.
+              </p>
+              <p>
+                Lo invitamos a complementar la información de contacto relacionada con la factura electrónica.
+              </p>
+            </div>
+
+            <div class="col-xs-12 col-xs-6">
+              <label>
+                <span>Nombre del responsable</span>
+              </label>
+              <div class="material-input">
+                <input type="text" required="" disabled [(ngModel)]="userBilling.name" name="userbillingName">
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <label>
+                <span>Télefono</span>
+              </label>
+              <div class="material-input">
+                <input type="number" required="" disabled [(ngModel)]="userBilling.phone" name="userbillingPhone">
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-xs-6">
+              <label>
+                <span>Cargo</span>
+              </label>
+              <div class="material-input">
+                <input type="text" required="" disabled [(ngModel)]="userBilling.position" name="userbillingPosition">
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6">
+              <label>
+                <span>Correo Electronico</span>
+              </label>
+              <div class="material-input"
+                [class.has-error]=" !emailBilling.pristine && (!emailBilling.valid  || !validEmail(userBilling.email))">
+                <input type="text" required="" disabled [(ngModel)]="userBilling.email" name="emailBilling"
+                  #emailBilling="ngModel">
+                <!-<span class="help-block text-left">Dirección de correo electrónico no válida</span>->
+              </div>
+            </div>
+
+            <div class="col-xs-12">
+              <div class="check pull-left" [class.has-error]="showErrorTerms">
+                <input type="checkbox" value="None" id="cds-check-1" [(ngModel)]="checkedTerms" name="terms">
+                <label for="cds-check-1"></label>
+                <p>Acepto que mi información puede ser usada de acuerdo a los <a
+                    href="https://helisa.com/legal/terminos-y-condiciones-generales/" target="_blank">Términos y
+                    Condiciones</a> y su <a href="https://helisa.com/legal/politica-de-tratamiento-de-datos-personales/"
+                    target="_blank">Políticas de
+                    Tratamientos de Datos Personales</a></p>
+                <span class="help-block text-left">Para continuar debe aceptar los terminos y condiciones.</span>
+              </div>
+            </div>
+
+            <!-<div class="col-xs-12">
+             <div class="check" [class.has-error]= "showErrorSaveData" >
+                <input type="checkbox" value="None" id="cds-check-2" [(ngModel)]="checkedSaveData" name="saveData">
+                <label for="cds-check-2"></label>
+                <p>Guardar Datos de Facturación Electrónica.</p>
+                <span class="help-block text-left">Para continuar debe Guadar Datos.</span>
+              </div>
+            </div>->
+
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn" [class.disable]="isDisableNextButton()" tabindex="13">Siguiente</button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="step!=2" class="text-center">
+        <a (click)="onClickNext()" class="btn" [class.disable]="isDisableNextButton()" tabindex="14">Siguiente</a>
+      </div>
+    </form>
+    -->
+
+
+
+    <!--SCORPION-->
+    <div class="payment-steps-container">
+      <div class="admin-form">
+        <div *ngIf="step == 3" class="wrap-form">
+          <div>
+            <div class="form-container">
+              <form role="form" class="row text-center">
+                <div>
+                  <h3>{{messagePayOnline}}</h3>
+                </div>
+                <div class="text-center">
+                  <a class="btn gray hidden">Cancelar</a>
+                  <a class="btn" routerLink="/company/secure/start/grid">Finalizar</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <form *ngIf="step!=3" role="form" style="padding-bottom: 46px;">
+          <div *ngIf="step==1" class="admin-description-section">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Descripción del Pago</th>
+                  <th>Cantidad</th>
+                  <th class="text-center">Sub Total de la compra</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let s of shoppingCarService.listServices let i = index">
+                  <td><button (click)="mostrar_compra2(i,s.description)" style="background-image: url('https://cdn.discordapp.com/attachments/556300022644473859/935933972406468638/flechaa.png'); height: 21px;width: 21px; border: none; background-color: transparent;"></button></td>
+                  <td>{{s.description}}</td>
+                  <td *ngIf='s.minutes != "-1"'>{{s.minutes}}</td>
+                  <td *ngIf='s.minutes == "-1"'>{{s.accessQuantity}}</td>
+                  <td class="text-center">{{s.basicPrice| currency:'USD':true:'2.2'}}</td>
+                  <td><a (click)="deleteService(i)" class="remove-button"></a></td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><b>Sub Total:</b></td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-center"><b>{{sumaFinalSubtotal | currency:'USD':true:'2.2'}}</b></td>
+                </tr>
+              </tfoot>
+            </table>
+          <img src="images/bg-colors.png">
+
+
+            
+            <div id="ventana-compra2" *ngIf="compra1">
+            <br>
+            <h4 id="descripcion" style="margin-left: 9%;"><b>Detalles de la compra del serivcio: {{nombreServicio}}</b></h4>
+            <button  (click)="cerrarVentana()" style="margin-left: 80%; margin-top: -3%; background: transparent; border: none; text-decoration: underline #CF1AE8; color: #e5007e;">Ver Menos</button>
+            
+            <table class="table">
+              <thead>
+                <th></th>
+                <th class="text-center">Impuesto</th>
+                <th class="text-center">Valor</th>
+              </thead>
+              <tbody>
+                <tr *ngIf="showIva">
+                  <td></td>
+                  <td class="text-center">IVA </td>
+                  <td class="text-center">{{producto1.iva | currency:'USD':true:'2.2'}}</td>
+                </tr>
+                <tr *ngIf='totalReteIva != 0'>
+                  <td></td>
+                  <td class="text-center">RETEIVA ({{profile.reteiva}})</td>
+                  <td class="text-center">- {{producto1.reteIva | currency:'USD':true:'2.2'}}</td>
+                </tr>
+                <tr *ngIf="profile.reteica != ''">
+                  <td></td>
+                  <td *ngIf="selectICa" class="text-center">RETEICA <select (click)="getInfoCookies()" class="selectpicker" *ngIf="selectICa"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="5" #selectIcaName="ngModel"
+                      [(ngModel)]="valorSelect" name="selectIca">
+                      <option *ngFor="let dato of datosICA">{{dato}}</option>
+                    </select>
+                  </td>
+                  <td *ngIf= "!selectICa" class="text-center">RETEICA ({{reteicaValue}}) </td>
+                  <td class="text-center">- {{producto1.reteIca | currency:'USD':true:'2.2'}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><b>Pago Total:</b></td>
+                  <td></td>
+                  <td class="text-center"><b>{{producto1.valorTotal | currency:'USD':true:'2.2'}}</b></td>
+                </tr>
+              </tfoot>
+            </table>
+            <img src="images/bg-colors.png">
+          </div>
+
+
+          <div *ngIf='compra2'>
+          <br>
+           <h4 id="descripcion" style="margin-left: 9%;"><b>Detalles de la compra del serivcio: {{nombreServicio}}</b></h4>
+           <button  (click)="cerrarVentana()" style="margin-left: 80%; margin-top: -3%; background: transparent; border: none; text-decoration: underline #CF1AE8; color: #e5007e;">Ver Menos</button>
+           
+            <table class="table">
+              <thead>
+                <th></th>
+                <th class="text-center">Impuesto</th>
+                <th class="text-center">Valor</th>
+              </thead>
+              <tbody>
+                <tr *ngIf="showIva">
+                  <td></td>
+                  <td class="text-center">IVA </td>
+                  <td class="text-center">{{producto2.iva| currency:'USD':true:'2.2'}}</td>
+                </tr>
+                <tr *ngIf='totalReteIva != 0'>
+                  <td></td>
+                  <td class="text-center">RETEIVA ({{profile.reteiva}})</td>
+                  <td class="text-center">- {{producto2.reteIva | currency:'USD':true:'2.2'}}</td>
+                </tr>
+                <tr *ngIf="profile.reteica != ''">
+                  <td></td>
+                  <td *ngIf="selectICa" class="text-center">RETEICA <select (click)="getInfoCookies()" class="selectpicker" *ngIf="selectICa"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="5" #selectIcaName="ngModel"
+                      [(ngModel)]="valorSelect2" name="selectIca">
+                      <option *ngFor="let dato of datosICA">{{dato}}</option>
+                    </select>
+                  </td>
+                  <td *ngIf= "!selectICa" class="text-center">RETEICA ({{reteicaValue}}) </td>
+                  <td class="text-center">- {{producto2.reteIca | currency:'USD':true:'2.2'}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><b>Pago Total:</b></td>
+                  <td></td>
+                  <td class="text-center"><b>{{producto2.valorTotal| currency:'USD':true:'2.2'}}</b></td>
+                </tr>
+              </tfoot>
+            </table>
+            <img src="images/bg-colors.png">
+          </div>
+
+          </div>
+          <div *ngIf="step==2" class="text-left">
+            <form #heroForm="ngForm" role="dataForm" class="row text-center" name="dataForm" id="dataForm"
+              (ngSubmit)="onClickNext(form)">
+              <h2 class="text-left">Datos de la Empresa</h2>
+              <div class="text-left">
+                <div class="col-xs-12">
+                  <div class="material-input">
+                    <input type="text" required="" [(ngModel)]="profile.nombre1" name="nombre1" tabindex="1">
+                    <label>
+                      <span>Nombre de la Empresa *</span>
+                    </label>
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-xs-6">
+                  <div class="dropdown material-dropdown" [class.has-error]="errorDocumentType">
+                    <label>Tipo de documento *</label>
+    
+                    <select class="selectpicker selects" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" tabindex="2" name="tipoDocumento" #registryName="ngModel"
+                      [(ngModel)]="profile.tipoDocumentoObj.codigo">
+                      <option *ngFor="let d of documentsTypes" value="{{d.codigo}}">{{d.tipo}}</option>
+                    </select>
+    
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="true" tabindex="2">
+                      {{profile?.tipoDocumentoObj?.tipo}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let d of documentsTypes"><a (click)="onSelectTypeDocument(d)">{{d.tipo}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input">
+                    <input type="text" required="" [(ngModel)]="profile.nit" name="Nit" tabindex="6">
+                    <label>
+                      <span>Numero de Documento *</span>
+                    </label>
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown">
+                    <label>Pais*</label>
+                    <select class="selectpicker selects" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" tabindex="4" name="pais" #registryName="ngModel"
+                      [(ngModel)]="profile.paisObj.id">
+                      <option *ngFor="let d of paises" value="{{d.id}}">{{d.nombre}}</option>
+                    </select>
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="3">
+                      <span class="caret"></span>
+                      {{profile.paisObj?.nombre}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let pais of paises" (click)="profile.paisObj = pais; profile.pais = pais.href"><a>{{pais.nombre}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown">
+                    <label>Ciudad*</label>
+                    <select class="selectpicker selects" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" tabindex="5" name="ciudad" #registryName="ngModel"
+                      [(ngModel)]="profile.ciudadObj.id">
+                      <option *ngFor="let d of ciudades" value="{{d.id}}">{{d.nombre}} - {{d.departamento.nombre}}</option>
+                    </select>
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="4">
+                      <span class="caret"></span>
+                      {{profile.ciudadObj?.nombre}} - {{profile.ciudadObj?.departamento.nombre}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" >
+                      <li *ngFor="let ciudad of ciudades" (click)="profile.ciudadObj = ciudad; profile.ciudad = ciudad.href"><a>{{ciudad.nombre}} - {{ciudad.departamento.nombre}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input">
+                    <input type="text" required="" [(ngModel)]="profile.direccion" name="direccion" tabindex="9">
+                    <label>
+                      <span>Dirección*</span>
+                    </label>
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input"
+                    [class.has-error]=" ! email.pristine && (!email.valid  || !validEmail(profile.email))">
+                    <input type="text" required="" [(ngModel)]="profile.email" name="email" #email="ngModel" tabindex="10">
+                    <label>
+                      <span>Correo Electronico*</span>
+                    </label>
+                    <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="dropdown material-dropdown">
+                    <label>Regimen*</label>
+                    <select class="selectpicker selects" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" tabindex="8" name="regimen" #registryName="ngModel"
+                      [(ngModel)]="profile.regimenObj.id">
+                      <option *ngFor="let d of regimens" value="{{d.id}}">{{d.nombre}}</option>
+                    </select>
+                    <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="11">
+                      <span class="caret"></span>
+                      {{profile.regimenObj?.nombre}}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                      <li *ngFor="let regimen of regimens" (click)="profile.regimenObj=regimen; profile.regimen=regimen.href"> <a>{{regimen.nombre}}</a></li>
+                    </ul>-->
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <div class="material-input">
+                    <input type="text" required="" [(ngModel)]="profile.telefono" name="telefono" tabindex="7">
+                    <label>
+                      <span>Télefono*</span>
+                    </label>
+                  </div>
+                </div>
+    
+              </div>
+              <h2 class="text-left">Datos de Facturación Electrónica</h2>
+              <div class="text-left" style="display: inline-block">
+    
+                <div class="col-xs-12">
+                  <p>
+                    PROASISTEMAS S.A. ha dispuesto para sus clientes la emisión electrónica de la factura de venta según la
+                    Resolución N° 006290 del 18 de agosto de 2017 expedida por la DIAN, de acuerdo a las condiciones del
+                    Decreto 2242 de 2015 que la regula, usted podrá consultar estos documentos a través del centro de
+                    servicios Helisa, sección Facturas o en su defecto, mediante un link enviado por correo electrónico
+                    junto al usuario y contraseña de acceso al portal de consulta.
+                  </p>
+                  <p>
+                    En dichos portales podrá verificar y descargar la factura y estará disponible al menos por 3 meses
+                    después de la fecha de emisión. En caso de ser necesario la impresión de este documento, la
+                    visualización del documento se adapta a la configuración de la impresora que tenga instalada.
+                  </p>
+                  <p>
+                    Lo invitamos a complementar la información de contacto relacionada con la factura electrónica.
+                  </p>
+                </div>
+    
+                <div class="col-xs-12 col-xs-6">
+                  <label>
+                    <span>Nombre del responsable</span>
+                  </label>
+                  <div class="material-input">
+                    <input type="text" required="" disabled [(ngModel)]="userBilling.name" name="userbillingName">
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <label>
+                    <span>Télefono</span>
+                  </label>
+                  <div class="material-input">
+                    <input type="number" required="" disabled [(ngModel)]="userBilling.phone" name="userbillingPhone">
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-xs-6">
+                  <label>
+                    <span>Cargo</span>
+                  </label>
+                  <div class="material-input">
+                    <input type="text" required="" disabled [(ngModel)]="userBilling.position" name="userbillingPosition">
+                  </div>
+                </div>
+    
+                <div class="col-xs-12 col-sm-6">
+                  <label>
+                    <span>Correo Electronico</span>
+                  </label>
+                  <div class="material-input"
+                    [class.has-error]=" !emailBilling.pristine && (!emailBilling.valid  || !validEmail(userBilling.email))">
+                    <input type="text" required="" disabled [(ngModel)]="userBilling.email" name="emailBilling"
+                      #emailBilling="ngModel">
+                    <!--<span class="help-block text-left">Dirección de correo electrónico no válida</span>-->
+                  </div>
+                </div>
+    
+                <div class="col-xs-12">
+                  <div class="check pull-left" [class.has-error]="showErrorTerms">
+                    <input type="checkbox" value="None" id="cds-check-1" [(ngModel)]="checkedTerms" name="terms">
+                    <label for="cds-check-1"></label>
+                    <p>Acepto que mi información puede ser usada de acuerdo a los <a
+                        href="https://helisa.com/legal/terminos-y-condiciones-generales/" target="_blank">Términos y
+                        Condiciones</a> y su <a href="https://helisa.com/legal/politica-de-tratamiento-de-datos-personales/"
+                        target="_blank">Políticas de
+                        Tratamientos de Datos Personales</a></p>
+                    <span class="help-block text-left">Para continuar debe aceptar los terminos y condiciones.</span>
+                  </div>
+                </div>
+    
+                <!--<div class="col-xs-12">
+                 <div class="check" [class.has-error]= "showErrorSaveData" >
+                    <input type="checkbox" value="None" id="cds-check-2" [(ngModel)]="checkedSaveData" name="saveData">
+                    <label for="cds-check-2"></label>
+                    <p>Guardar Datos de Facturación Electrónica.</p>
+                    <span class="help-block text-left">Para continuar debe Guadar Datos.</span>
+                  </div>
+                </div>-->
+    
+              </div>
+            </form>
+            </div>
+            <div *ngIf="step!=2" class="text-center">
+              <a (click)="onClickNext()" class="btn" [class.disable]="isDisableNextButton()" tabindex="14">Siguiente</a>
+            </div>
+          </form>
+          </div>
+         </div>
+      </div>
+        
+    <!--FORMULARIO TOTAL-->
+    
+    <div>
+    <h4  style="margin-left: 8%;"><b>Monto total de la compra</b></h4>
+      <div class="payment-steps-container">
+        <div class="admin-form">
+          <div *ngIf="step == 3" class="wrap-form">
+            <div>
+              <div class="form-container">
+                <form role="form" class="row text-center">
+                  <div>
+                    <h3>{{messagePayOnline}}</h3>
+                  </div>
+                  <div class="text-center">
+                    <a class="btn gray hidden">Cancelar</a>
+                    <a class="btn" routerLink="/company/secure/start/grid">Finalizar</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <form *ngIf="step!=3" role="form" style="padding-bottom: 46px;">
+            <div *ngIf="step==1" class="admin-description-section">
+              <table class="table">
+                <thead>
+                  <th></th>
+                  <th class="text-center">Impuesto</th>
+                  <th class="text-center">Valor</th>
+                </thead>
+                <tbody>
+                  <tr *ngIf="showIva">
+                    <td></td>
+                    <td class="text-center">IVA </td>
+                    <td class="text-center">{{sumaFinaliva| currency:'USD':true:'2.2'}}</td>
+                  </tr>
+                  <tr *ngIf='totalReteIva != 0'>
+                    <td></td>
+                    <td class="text-center">RETEIVA ({{profile.reteiva}})</td>
+                    <td class="text-center">- {{sumaFinalreteIva | currency:'USD':true:'2.2'}}</td>
+                  </tr>
+                  <tr *ngIf="profile.reteica != ''">
+                    <td></td>
+                    <td *ngIf="selectICa" class="text-center">RETEICA</td>
+                    <td *ngIf= "!selectICa" class="text-center">RETEICA ({{reteicaValue}}) </td>
+                    <td class="text-center">- {{sumaFinalreteIca | currency:'USD':true:'2.2'}}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td><b>Pago Total:</b></td>
+                    <td></td>
+                    <td class="text-center"><b>{{sumaFinalvalorTotal | currency:'USD':true:'2.2'}}</b></td>
+      
+                  </tr>
+                </tfoot>
+              </table>
+              <img src="images/bg-colors.png">
+            </div>
+            <div *ngIf="step!=2" class="text-center">
+              <a (click)="onClickNext()" class="btn" [class.disable]="isDisableNextButton()" tabindex="14">Siguiente</a>
+            </div>
+          </form>
+      </div>
+
+    <!--SCORPION-->
+
+
+    <form #form action="https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu" method="post" name="form"
+      id="form"> 
+      <!--https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu
+      https://checkout.payulatam.com/ppp-web-gateway-payu
+      
+      -->
+
+      <!--<form #form action="{{urlSendForm}}" method="post" name="form" id="form">-->
+      <!--<input type="hidden" name="cuentaId" value="512321"/>-->
+      <!--<input type="hidden" name="accountId" value=""/>-->
+      <!--<input type="hidden" name="description" value="{{model.descripcion}}" />-->
+      <!--<input type="hidden" name="referenceCode" value="{{model.refVenta}}" />-->
+      <!--<input type="hidden" name="currency" value="{{model.moneda}}" />-->
+      <!--<input type="hidden" name="amount"  value="{{model.valor}}" />-->
+      <!--<input type="hidden" name="tax" value="{{model.iva}}" />-->
+      <!--<input type="hidden" name="taxReturnBase" value="{{model.baseDevolucionIva}}" />-->
+      <!--<input type="hidden" name="signature" value="{{model.firma}}"/>-->
+      <!--<input type="hidden" name="buyerEmail" value="{{model.emailComprador}}"/>-->
+      <!--<input type="hidden" name="test" value="{{model.prueba}}"/>-->
+      <!--<input type="hidden" name="responseUrl" value="{{model.url_respuesta}}"/>-->
+      <!--<input type="hidden" name="confirmationUrl" value="{{model.url_confirmacion}}"/>-->
+      <!--<input type="hidden" name="extra1" value="{{model.extra1}}" />-->
+      <!--<input type="hidden" name="extra2" value="{{model.extra2}}"/>-->
+
+     <!--########################################################################################--> 
+      <!--<input type="hidden" name="usuarioId" value="{{model.usuarioId}}" />-->
+      <!--<input type="hidden" name="descripcion" value="{{model.descripcion}}" />-->
+      <!--<input type="hidden" name="refVenta" value="{{model.refVenta}}" />-->
+      <!--<input type="hidden" name="moneda" value="{{model.moneda}}" />-->
+      <!--<input type="hidden" name="valor" value="{{model.valor}}" />-->
+      <!--<input type="hidden" name="iva" value="{{model.iva}}" />-->
+      <!--<input type="hidden" name="baseDevolucionIva" value="{{model.baseDevolucionIva}}" />-->
+      <!--<input type="hidden" name="firma" value="{{model.firma}}" />-->
+      <!--<input type="hidden" name="emailComprador" value="{{model.emailComprador}}" />-->
+      <!--<input type="hidden" name="prueba" value="{{model.prueba}}" />-->
+      <!--<input type="hidden" name="url_respuesta" value="{{model.url_respuesta}}" />-->
+      <!--<input type="hidden" name="url_confirmacion" value="{{model.url_confirmacion}}" />-->
+      <!--<input type="hidden" name="extra1" value="{{model.extra1}}" />-->
+      <!--<input type="hidden" name="extra2" value="{{model.extra2}}">-->
+      <!--<input type="hidden" name="extra3" value="{{model.extra3}}">-->
+      <!--########################################################################################--> 
+
+
+      <input type="hidden" name="merchantId" value="{{model.usuarioId}}" />
+      <input type="hidden" name="ApiKey" value="{{model.key}}" />
+      <input type="hidden" name="referenceCode" value="{{model.refVenta}}" />
+      <input type="hidden" name="amount" value="{{model.valor}}" />
+      <input type="hidden" name="currency" value="{{model.moneda}}" />
+      <input type="hidden" name="accountId" value="{{model.accountId}}" />
+      <input type="hidden" name="buyerEmail" value="{{model.emailComprador}}" />
+      <input type="hidden" name="description" value="{{model.description}}" />
+      <input type="hidden" name="test" value="0" />
+      <input type="hidden" name="iva" value="0" />
+      <input type="hidden" name="baseDevolucionIva" value="0" />
+      <input type="hidden" name="url_respuesta" value="{{model.url_respuesta}}" />
+      <input type="hidden" name="url_confirmacion" value="{{model.url_confirmacion}}" />
+      <input type="hidden" name="signature" value="{{model.firma}}" />
+      <input type="hidden" name="extra1" value="{{model.extra1}}" />
+      <input type="hidden" name="extra2" value="{{model.extra2}}" />
+      <input type="hidden" name="extra3" value="{{model.extra3}}" />
+
+
+    </form>
+
+
+  </div>
+
+  <!-- nuevo diseño-->
+  <form class="admin-form " style="display: none">
+    <div class="text-left">
+      <h2>Consignación / Información Exógena 2016</h2>
+      <h5><b>Después de realizar el pago, diligencie el siguiente formulario:</b></h5>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Nombre *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Apellido *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Empresa *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>NIT *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Telefono *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Celular *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Dirección *</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <div class="material-input">
+          <input name="Lorem Impsum" required="" type="text" class="">
+          <label>
+            <span>Correo Electrónico *</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="dropdown material-dropdown material-file">
+          <label>Copia de Consignación</label>
+          <a class="btn btn-default">
+            <span>img.099.jpg</span>
+            <span></span>
+          </a>
+          <input type="file">
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="payment-type" style="display: none">
+    <h4>Seleccione un metodo de pago.</h4>
+    <div>
+      <a class="online">
+        <span class="icon"></span>
+        <h5 class="text"><b>Pago en Línea</b></h5>
+      </a>
+      <a class="consignment">
+        <span class="icon"></span>
+        <h5 class="text"><b>Pago por consignación</b></h5>
+      </a>
+    </div>
+  </div>
+  <div class="payment-consignment" style="display: none">
+    <h2>Pago por consignación</h2>
+    <p>Consignar $458.150 (Cuatrocientos cincuenta y ocho mil ciento cincuenta pesos IVA incluido), en cualquiera de las
+      siguientes cuentas:</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            <img src="../../../images/bancolombia-logo.svg">
+          </div>
+          <div class="col-xs-12 col-sm-7">
+            <p>Referencia: Número de registro o de licencia del producto HELISA.
+              Cuenta Corriente Nro.: 04704292801
+              Convenio Nro.: 19727</p>
+          </div>
+          <div class="col-xs-12 col-sm-2">
+            <button>Ver ejemplo</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            <img src="../../../images/davivienda-logo.svg">
+          </div>
+          <div class="col-xs-12 col-sm-7">
+            <p>Referencia: Número de identificación de la empresa o la persona.
+              Cuenta Corriente Nro.: 009969999631</p>
+          </div>
+          <div class="col-xs-12 col-sm-2">
+            <button>Ver ejemplo</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-3">
+            <img src="../../../images/banco-agrario-logo.svg">
+          </div>
+          <div class="col-xs-12 col-sm-7">
+            <p>Referencia: Número de identificación de la empresa o la persona
+              Cuenta Corriente Nro.: 10820000427-3</p>
+          </div>
+          <div class="col-xs-12 col-sm-2">
+            <button>Ver ejemplo</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <a class="btn pull-left">Cancelar</a>
+        <a class="btn pull-right">Siguiente</a>
+      </div>
+    </div>
+  </div>
+  <!---->
+
+</div>

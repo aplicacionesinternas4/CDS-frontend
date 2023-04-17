@@ -1,0 +1,15 @@
+<div class="col-md-3 visible-md visible-lg">
+  <app-shopping-car></app-shopping-car>
+  <app-service-bar [orientation]="orientation"></app-service-bar>
+</div>
+
+<div class="col-xs-12 col-md-9">
+  <div class="update-content consulting">
+    <ul class="list-unstyled pull-left full-width services-list">
+      <li *ngFor="let service of listServices" class="update-list">
+        <div style="text-align: left;  width: 100%;" [innerHTML]="service.textSmall"></div>
+        <a [routerLink]="['../detail/', service.id]" >Ver Información</a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,220 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="https://centrodeservicios.helisa.com/images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <!--<a href="javascript:void(0)">Nombre de la company</a>-->
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+    <div class="bottom">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h2>Historial de Cambios</h2>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+          <form>
+          </form>
+        </div>
+      </div>
+      <br>
+      <h4 class="text-left">Seleccione la fecha del cambio</h4>
+      <div class="scrollBar scrollbar-vertical">
+        <div class="scrollBar-wrap">
+          <table class="table table-hover" id="historialCompras">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let aud of audit">
+                <td data-toggle="modal" data-target="#responsabilidades" (click)="selectauditoria(aud)">
+                  {{aud.fechaAuditoria}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="emptyList" class="empty-case">
+            <span class="icon"></span>
+            <h4>No hay información</h4>
+          </div>
+          <div *ngIf="loading" class="load-wrap">
+            <div class="load"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal login fade scrollbarForModal" style="pointer-events: all !important;" id="responsabilidades"
+  tabindex="-1" role="dialog" aria-labelledby="steps">
+  <div class="modal-dialog big ">
+    <div class="modal-content ">
+      <div class="modal-body ">
+        <button type="button" data-dismiss="modal">
+          <span></span>
+        </button>
+        <div class="admin-form">
+          <h2 id="title1" class="pull-left full-width text-center">Historial de Cambios</h2>
+          <br>
+        </div>
+        <div>
+          <div class="col-xs-12">
+            <p style="font-size: 14px;">
+              Señor usuario el dia <b style="color: #29618f;">{{fechaModificacion}}</b> quedo modificada la empresa
+              <b style="color: #29618f;">{{profile.empresa}}</b>,
+              bajo el Nº de identificacion <b style="color: #29618f;">{{profile.nit}}</b> en la cuenta del Usuario
+              <b style="color: #29618f;">{{fullNameUser}}</b>
+            </p>
+            <p style="font-size: 14px;">Las modificaciones realizadas son:</p>
+          </div>
+
+          <div class="bottom">
+            <div class="scrollBar scrollbar-vertical">
+              <div class="scrollBar-mask"></div>
+              <div class="scrollBar-wrap">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Campo</th>
+                      <th>Antes</th>
+                      <th>Despues</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let c of camposs">
+                      <td>{{c.fecha}}</td>
+                      <td>{{c.campo}}</td>
+                      <td>{{c.antes}}</td>
+                      <td>{{c.ahora}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div *ngIf="emptyList2" class="empty-case">
+                  <span class="icon"></span>
+                  <h4>No hay información</h4>
+                </div>
+                <div *ngIf="loading2" class="load-wrap">
+                  <div class="load"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class=" button-p">
+          <button data-dismiss="modal" class="btn gray m-0 m-left">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal login fade scrollbarForModal" style="pointer-events: all !important;" id="responsabilidades"
+  tabindex="-1" role="dialog" aria-labelledby="steps">
+  <div class="modal-dialog big ">
+    <div class="modal-content ">
+      <div class="modal-body ">
+        <button type="button" data-dismiss="modal">
+          <span></span>
+        </button>
+        <div class="admin-form">
+          <h2 id="title1" class="pull-left full-width text-center">Historial de Cambios</h2>
+          <br>
+        </div>
+        <div>
+          <div class="col-xs-12">
+            <p style="font-size: 14px;">
+              Señor usuario el dia <b style="color: #29618f;">{{fechaModificacion}}</b> quedo modificada la empresa
+              <b style="color: #29618f;">{{profile.empresa}}</b>,
+              bajo el Nº de identificacion <b style="color: #29618f;">{{profile.nit}}</b> en la cuenta del Usuario
+              <b style="color: #29618f;">{{fullNameUser}}</b>
+            </p>
+            <p style="font-size: 14px;">Las modificaciones realizadas son:</p>
+          </div>
+
+          <div class="start">
+            <div class="bottom">
+              <div class="scrollBar scrollbar-vertical">
+                <div class="scrollBar-mask"></div>
+                <div class="scrollBar-wrap">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Campo</th>
+                        <th>Antes</th>
+                        <th>Despues</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let c of camposs">
+                        <td>{{c.fecha}}</td>
+                        <td>{{c.campo}}</td>
+                        <td>{{c.antes}}</td>
+                        <td>{{c.ahora}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div *ngIf="emptyList2" class="empty-case">
+                    <span class="icon"></span>
+                    <h4>No hay información</h4>
+                  </div>
+                  <div *ngIf="loading2" class="load-wrap">
+                    <div class="load"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class=" button-p">
+          <button data-dismiss="modal" class="btn gray m-0 m-left">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

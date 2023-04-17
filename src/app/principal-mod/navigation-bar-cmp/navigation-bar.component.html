@@ -1,0 +1,161 @@
+<div class="modal fade" id="infoAsis" tabindex="-1" role="dialog" aria-labelledby="technicalVisit" aria-hidden="true">
+  <div class="modal-dialog big">
+      <div class="modal-content">
+        <div class="modal-body p2">
+          <button type="button" data-dismiss="modal">
+            <span></span>
+          </button>
+          <div class="admin-form">
+          
+              <h2 id="title1" class="pull-left full-width text-center">Leer esto, le conviene...</h2>
+             
+              <h5 class="text-left mt-1" id="txt2">
+                1. Antes de solicitar servicio, pregúntele a Helisa (página principal <a href="https://helisa.com/" target="_blank">www.helisa.com</a>) 
+              </h5>
+              
+             
+              <a target="_blank" href="https://helisachat.mybluemix.net/" ><img src="images/Ventana.png" class="img1" > </a>
+              <a target="_blank" href="/assets/manuales/HELISA_modalidades_de_soporte_2020.pdf" ><img src="images/Ventana2.png" class="img2" > </a>
+               
+                <br>
+              
+                  <hr>
+                  <h5 class="text-left mt-5" id="txt4"> Condiciones para la prestación del servicio: </h5> <br>
+                <h5 class="text-left mt-5" id="txt1">
+                  Los Minutos adquiridos para SOPORTE REMOTO, tendrán una vigencia para su consumo de
+                  1(un)año, <br>   contando desde su fecha de adquisicón. 
+                  Los minutos no consumidos en el periodo de vigencia no serán renovados en el periodo siguiente. <br>
+                  <br>
+                  Este servicio se prestará a través de la plataforma que PROASISTEMAS S.A. defina en el momento de prestar el servicio.
+                </h5>
+               
+
+          </div>
+
+       
+          <div class=" button-p">
+              <button data-dismiss="modal" [routerLink]="['request']" class="btn gray m-0 m-left" >Acepto Condiciones</button >
+          </div>
+          <div class=" button-b">
+            <button data-dismiss="modal"  class="btn gray m-0 m-right" >Cancelar</button >
+          </div>
+      
+
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="modal fade" id="infoBuy" tabindex="-1" role="dialog" aria-labelledby="technicalVisit" aria-hidden="true">
+  <div class="modal-dialog big">
+      <div class="modal-content">
+        <div class="modal-body p2">
+          <button type="button" data-dismiss="modal">
+            <span></span>
+          </button>
+          <div class="admin-form">
+          
+              <h2 id="title1" class="pull-left full-width text-center">Leer esto, le conviene...</h2>
+             
+              <h5 class="text-left mt-1" id="txt2">
+                1. Antes de solicitar servicio, pregúntele a Helisa (página principal <a href="https://helisa.com/" target="_blank">www.helisa.com</a>) 
+              </h5>
+              <a target="_blank" href="https://helisachat.mybluemix.net/" ><img src="images/Ventana.png" class="img1" > </a>
+              <a target="_blank" href="/assets/manuales/HELISA_modalidades_de_soporte_2020.pdf" ><img src="images/Ventana2.png" class="img2" > </a>
+                <br>
+                  <hr>
+                  <h5 class="text-left mt-5" id="txt4"> Condiciones para la prestación del servicio: </h5> <br>
+                <h5 class="text-left mt-5" id="txt1" style="color: #29618f !important;">
+                  Para poder solicitar este servicio debe contar con un saldo mínimo de 15 minutos 
+                  disponibles en su cuenta del centro de servicios HELISA. En caso de que la atención al 
+                  servicio requiera de mayor tiempo (Minutos), el usuario deberá adquirir los minutos 
+                  adicionales que se necesiten para finalizar los procesos satisfactoriamente..
+                </h5>
+          </div>
+          <div class=" button-p" *ngIf = "whithMinutes == true">
+              <button data-dismiss="modal" [routerLink]="" class="btn gray m-0 m-left" >Adquirir Minutos</button >
+          </div>
+          <div class=" button-p" *ngIf = "noMinutes == true">
+            
+            <button class="btn gray m-0 m-left" ><a href="company/secure/buy-services/detail/4" style="text-decoration: none; color: white;"> Adquirir Minutos  </a></button >
+           </div>
+          <div class=" button-b">
+            <button data-dismiss="modal"  class="btn gray m-0 m-right" >Cancelar</button >
+          </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+<header>
+    
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div id="comprobacion">
+              <button data-toggle="modal" data-target="#infoAsis" id="conMinutos" (click)="getMinutes()" class="buttons" >Solicitar Servicio</button>
+              <a class="visible-sm"><br></a>
+              <button data-toggle="modal" data-target="#infoBuy" id="sinMinutos" (click)="getMinutes()" class="buttons" >Solicitar Servicio</button>
+              <a class="visible-sm"><br></a>
+            </div>
+            <!--<div>
+              <button (click)="getMinutes()" class="buttons" >Solicitar Servicio</button>
+              <a class="visible-sm"><br></a>
+            </div>
+            <div>
+              <button data-toggle="modal" data-target="#infoBuy" id="sinMinutos" class="buttons" >Solicitar Servicio</button>  ng-click="getMinutes()"
+              <a class="visible-sm"><br></a>
+            </div> -->
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav admin">
+            <li ><a (click)="goToCompanies()">Lista de Empresas</a></li>
+            <li routerLinkActive="active"><a routerLink="start">Mi Historial</a></li>
+            <li routerLinkActive="active"><a routerLink="buy-services">Servicios Soporte</a></li>
+            <li routerLinkActive="active"><a routerLink="other-services">Otros Servicios</a></li>
+            <li routerLinkActive="active"><a routerLink="services-done">Servicios Remotos</a></li>
+            <!--<li routerLinkActive="active"><a routerLink="billings">Facturas</a></li>-->
+            <li>
+              <a class="visible-xs" href="http://helisa.com/videos.php">Ayuda</a>
+              <a class="hidden-xs icon help-icon" href="http://helisa.com/videos.php" target="_blank" data-toggle="tooltip" title="Ayudas"></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<!--<nav class="navbar">
+
+        <div class="navbar-header-mine">
+          <a href="/" class="logo pull-left">
+            <img src="images/Helisa_NIIF.svg">
+          </a>
+
+
+          <div>
+            <h5 class="pull-right">
+              <div class="close-session-mine">
+                <a class="close-session" href="javascript:void(0)">
+                  <div class="hidden-xs">Cerrar Sesión</div>
+                </a>
+              </div>
+            </h5>
+            <a class="visible-sm"><br></a>
+          </div>
+        </div>-->

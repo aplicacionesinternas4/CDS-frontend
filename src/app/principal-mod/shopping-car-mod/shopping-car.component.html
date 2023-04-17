@@ -1,0 +1,18 @@
+<!--<div class="dropdown-menu admin-shopping-dropdown">-->
+<div class=" admin-shopping-dropdown" [class.dropdown-menu]="popup" [class.dropdown-menu]="(!showPopup && popup)" [class.popup-shopping-car]="(showPopup&&popup)" (blur)="focusOut()">
+  <h4 >Resumen del Carrito</h4>
+  <h6 >Tiene {{shoppingCarService?.listServices.length}} productos en su lista</h6>
+  <ul class="list-unstyled">
+    <li *ngFor="let s of shoppingCarService?.listServices let i = index">
+      <h6>
+        <a (click)="deleteServiceIndex(i)"></a>
+        <span>{{s.description}}</span>
+        <span>{{s.price| currency:'USD':true:'2.2'}}</span>
+      </h6>
+    </li>
+  </ul>
+  <div class="admin-total">
+    <h2>{{shoppingCarService?.total| currency:'USD':true:'2.2'}}</h2>
+    <a (click)="onClickShoppingCar()"class="big-shopping-cart" [class.change-cursos-disable]="!haveProductsCar()" [class.change-cursos-enable]="haveProductsCar()"></a>
+  </div>
+</div>

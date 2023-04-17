@@ -1,0 +1,43 @@
+<div>
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>Historial de Facturación Electrónica</h2>
+    </div>
+  </div>
+  <div class="scrollBar scrollbar-vertical">
+    <div class="scrollBar-mask"></div>
+    <div class="scrollBar-wrap">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Factura</th>
+          <th>Fecha</th>
+          <th class="visible-md visible-lg">Valor</th>
+          <th>PDF</th>
+          <th>XML</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let biiling of billings let i = index ">
+          <td class="visible-md visible-lg">{{biiling.document}}</td>
+          <td>{{biiling.date.day < 10 ? "0"+biiling.date.day :biiling.date.day }}/{{ biiling.date.month < 10 ? "0"+biiling.date.month : biiling.date.month}}/{{ biiling.date.year}}</td>
+          <td>{{biiling.value | currency:'USD':true:'1.2-2'}}</td>
+          <td class="hidden-xs"><a href="{{getPDF(biiling)}}" target="_self" download></a></td>
+          <td class="hidden-xs"><a *ngIf="biiling.xml" href="{{getURLXML(biiling)}}" target="_blank">XML</a></td>
+        </tr>
+        </tbody>
+      </table>
+      <div *ngIf="emptyList" class="empty-case">
+        <span class="icon"></span>
+        <h4>No hay información</h4>
+      </div>
+
+      <div *ngIf="loading" class="load-wrap">
+        <div class="load"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  
+

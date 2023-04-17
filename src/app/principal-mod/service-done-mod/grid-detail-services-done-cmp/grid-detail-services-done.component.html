@@ -1,0 +1,32 @@
+<div class="bottom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12 pull-right">
+      <form>
+        <div class="back">
+          <a (click)="getGrid()"></a>
+        </div>
+        <div>
+          <h5 class="pull-right">
+            <a class="download-history" onclick="window.print();">
+              <span class="icon"></span>
+              <span class="hidden-xs">Descarga</span>
+            </a>
+          </h5>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6 col-xs-12 pull-left">
+      <h2>{{serviceDone.temaObj.nombre}}</h2>
+    </div>
+  </div>
+  <div class="box-settings">
+    <p><b>{{serviceDone.temaObj.nombre}}</b></p>
+    <p><b> Servicio registrado el {{serviceDone.fechaRegistro | date : 'dd MMMM yyyy hh:mm' }}</b></p>
+    <p><b>Atendido por {{serviceDone.asesor}}</b></p>
+    <p><b>Consumo de {{serviceDone.puntos}} minutos</b></p>
+    <h3>-Observaciones</h3>
+    <p>{{serviceDone.observaciones}}</p>
+    <h3>-Conclusiones</h3>
+    <p>{{serviceDone.conclusiones}}</p>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+.a_label{
+    color: #EC008C;
+}
+
+.a_label:hover{
+    color: #666666;
+}
+
+.admin .start .ok .icon {
+    -webkit-mask: url(../../../images/llave.png);
+    mask: url(../../../images/llave.png);
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    width: 15px;
+  }
+  .admin .start .no .icon {
+    -webkit-mask: url(../../../images/llave.png);
+    mask: url(../../../images/llave.png);
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    width: 15px;
+  }

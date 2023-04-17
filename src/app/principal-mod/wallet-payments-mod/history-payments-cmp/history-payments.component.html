@@ -1,0 +1,46 @@
+<div class="bottom">
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      <h2>Historial de pagos a Cartera</h2>
+    </div>
+    <div class="col-sm-6 col-xs-12">
+      <form>
+        <div>
+          <h5 class="pull-right">
+            <a class="download-history" href="javascript:void(0)">
+              <span class="icon"></span>
+              <span class="hidden-xs">Descarga</span>
+            </a>
+          </h5>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="scrollBar scrollbar-vertical">
+    <div class="scrollBar-mask"></div>
+    <div class="scrollBar-wrap">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Producto</th>
+          <th>Observacion</th>
+          <th>Monto</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let s of historial">
+          <td>{{s.fecha}}</td>
+          <td>{{s.service.descripcion}}</td>
+          <td>{{s.observacion}}</td>
+          <td>{{s.monto}}</td>
+        </tr>
+      </tbody>
+      </table>
+      <div *ngIf="emptyList" class="empty-case">
+        <span class="icon"></span>
+        <h4>No hay información</h4>
+      </div>
+    </div>
+  </div>
+</div>

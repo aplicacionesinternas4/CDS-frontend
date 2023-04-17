@@ -1,0 +1,562 @@
+<header></header>
+<section>
+  <div id="dujo-login-container" class="container kansas-login text-center center-login">
+
+    <div id="dujo-login-content" class="row">
+      <img src="/assets/img/logo.png">
+
+      <!-- LOGIN FORM -->
+      <div id="login-form" class="col-xs-8 col-xs-offset-2" [class.hidden]="type!=loginType.LOGIN">
+        <form novalidate (ngSubmit)="submit(login)" #login="ngForm" class="col-xs-6">
+          <div>
+            <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!loginErrorEmpty">
+              <h5 id="lb-login-error">Por favor complete todos los campos</h5>
+            </div> 
+            <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!loginError">
+              <h5 id="lb-login-error">Los datos registrados no coinciden </h5>
+            </div>
+            <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!loginErrorBlock">
+              <h5 id="lb-login-error">Su cuenta ha sido bloqueada, por favor restablesca contraseña</h5>
+            </div>
+            <div id="div-login-person" class="form-group pull-left full-width">
+              <div class="material-input " [class.has-error]="!username.valid && !username.pristine" >
+                <input type="text" name="email" id="tb-login-user"  (oninvalid)="validateFileds();" required [(ngModel)]="model.username" #username="ngModel">
+                <label>
+                  <span>Correo electronico</span>
+                </label>
+                <span class="help-block text-left">Correo electronico requerido.</span>
+              </div>
+            </div>
+            <div id="div-login-key" class="form-group pull-left full-width mb-8">
+              <div class="material-input " [class.has-error]="!password.valid &&!password.pristine" >
+                <input type="password" focus-me="true" required name="password" id="tb-login-password" required [(ngModel)]="model.password" #password="ngModel">
+                <label>
+                  <span>Contraseña</span>
+                </label>
+                <span class="help-block text-left">Password requerido.</span>                
+                <h4 class="pull-left"><a id="forgot-password-button" href="javascript:void(0)" (click)="type=loginType.SEND_EMAIL; recoveryEmailError=false; ">¿Olvido su contraseña?</a></h4>
+              </div>
+            <!--[disabled]="!login.form.valid"-->
+            <div id="registry" class="registry-btn pull-right">                              
+              <h4>
+                <button type="submit" id="btn-session" style="font-size: 15px!important;color: #266494;background: #e4e4e4;margin: -12% 0% 0% -20% !important;" class="light-blue-button" >INGRESAR</button>                
+                <a (click)="type=loginType.PERSONAL_REGISTRATION" class="registry-btn" style="font-size: 15px!important;color:#266494;background: #e4e4e4;margin: 0% 5% !important;padding: 9px;" class="light-blue-button">REGISTRARSE</a>
+              </h4>                
+              <a href="/assets/manuales/MANUAL.pdf">
+                <img src="/assets/images/manual.png">
+              </a>                                     
+           </div>
+            </div>
+            <!-- Manuales -->
+            <!--<div id="registry" class="registry-btn">
+              <div class="text-center">
+                <div class="pull-top">    
+                  <p>Regístrese y acceda rápidamente al centro virtual de servicios Helisa.</p>
+                  <a (click)="type=loginType.PERSONAL_REGISTRATION" class="registry-btn" style="font-size: 15px!important;color:#266494;background: #e4e4e4;margin-top: -12px !important;" class="light-blue-button">Registrarse</a>
+                  <a href="/assets/manuales/MANUAL.pdf">
+                    <img src="/assets/images/manual.png">
+                  </a>  
+                </div>
+              </div>
+            </div>-->
+            <!--<h4 class="pull-left"><a id="forgot-password-button" href="javascript:void(0)" (click)="type=loginType.SEND_EMAIL; recoveryEmailError=false; ">¿Olvido su contraseña?</a></h4>
+            <h4 class="pull-right"><button type="submit" id="btn-session" style="font-size: 15px!important;color: #266494;background: #e4e4e4;margin-top: -12px !important;" class="light-blue-button" >INGRESAR</button></h4>-->
+
+            <!--[disabled]="!login.form.valid"-->
+          </div>
+        </form>
+        
+        <!-- REGISTRY -->
+        <!--<form novalidate (ngSubmit)="submit(login)" #login="ngForm" class="col-xs-6">-->
+        <div id="registry" class="col-xs-6 registry">
+          <div class="text-center">
+            <div>
+              <div>
+                <a href="https://soportecloud.helisa.com/cloud/soporte_cloud.php"
+                class="ml-7"> 
+                  <img src="/assets/images/HelisaCloud.png" width="350" height="220">
+                </a> 
+                <!-- Manuales -->
+                <!--<div id="registry" class="registry-btn">
+                  <div class="text-center">
+                    <div class="pull-top">    
+                      <p>Regístrese y acceda rápidamente al centro virtual de servicios Helisa.</p>
+                      <a (click)="type=loginType.PERSONAL_REGISTRATION" class="registry-btn" style="font-size: 15px!important;color:#266494;background: #e4e4e4;margin-top: -12px !important;" class="light-blue-button">Registrarse</a>
+                      <a href="/assets/manuales/MANUAL.pdf">
+                        <img src="/assets/images/manual.png">
+                      </a>  
+                    </div>
+                  </div>
+                </div>-->    
+              </div>              
+            </div> 
+          </div>       
+        </div>
+      <!--</form>-->
+      </div>
+
+      <!-- FORGOT PASSWORD -->
+      <div class="col-xs-4 col-xs-offset-4" id="forgot-password"  [class.hidden]="type!=loginType.SEND_EMAIL||loading">
+        <p>Para restablecer la contraseña, introduce la dirección de correo electrónico</p>
+        <form   (ngSubmit)="sendRecoveryEmail()"  class="col-xs-4 col-xs-offset-4 center-recovery"  #recoveryEmailForm="ngForm">
+          <div id="forgot-password-error-message" class="form-group text-left has-error hidden" [class.hidden]="!recoveryEmailError">
+            <h5 id="lb-recovery-error">Correo no valido, intentelo de nuevo</h5>
+          </div>
+          <div id="div-recovery-email" class="form-group full-width" [class.has-error]="!recoveryEmailInput.valid&&!recoveryEmailInput.pristine">
+            <div class="material-input " [class.has-error]="!recoveryEmailInput.valid&&!recoveryEmailInput.pristine">
+              <input type="text" required="" id="tb-recovery-email" name="email" required [(ngModel)]="recoveryEmail" #recoveryEmailInput="ngModel">
+              <label>
+                <span>Correo Electrónico</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <h4 class="pull-right"><button class="light-blue-button" type="submit" >ENVIAR</button></h4>
+            <h4 class="pull-left"><button type="button" class="light-blue-button button-cancel" (click)="type=loginType.LOGIN">CANCELAR</button></h4>
+          </div>
+        </form>
+      </div>
+
+      <!-- FORGOT PASSWORD MESSAGE -->
+      <div id="forgot-password-message" class="col-xs-4 col-xs-offset-4" [class.hidden]="!loading">
+        <h5>Espere un momento</h5>
+        <span></span>
+      </div>
+
+      <!-- CONFIRMATION -->
+      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" style="position: fixed; top: 50px; left: 0;"></button>
+      <div id="div-confirmation-active" class="col-xs-4 col-xs-offset-4 hidden" [class.hidden]="type!=loginType.SEND_EMAIL_ACTIVATION">
+        <p>Se ha enviado un link de confirmación al siguiente correo : <strong>{{personalRegistryModel.email}}</strong></p>
+        <h2 id="lb-confirm-email" class="h3"></h2>
+        <h5>El link expirará en <span id="register-time">7</span> diás. Por favor revise su bandeja de entrada<br> y de clic en el link para confirmar su registro.</h5>
+        <h4><a id="accept-button" class="light-blue-button" (click)="type=loginType.LOGIN">Aceptar</a></h4>
+      </div>
+      <div class="modal login fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+        <div class="modal-dialog big">
+          <div class="modal-content">
+            <div class="modal-body">
+              <button type="button" data-dismiss="modal">
+                <span></span>
+              </button>
+              <h3>Alerta de Registro</h3>
+              
+              <div>
+                <div class="register" *ngIf="modalError == false && !personalRegistry.form.valid">
+                    <h3 style="color:black !important; margin-bottom: 12px"> <strong>Diligencie todos los datos antes de continuar.</strong></h3>
+                </div>
+                <div class="register" *ngIf="personalRegistry.form.valid && modalError == false ">
+                  <h3 style="color:black !important; margin-bottom: 12px"> <strong>Corrija los errores e intente de nuevo.</strong></h3>
+                </div>
+                <div *ngIf="modalError == true ">
+                  <div  class="register">
+                      <h4 style="color:black !important; margin-bottom: 12px"> Se ha enviado un link de confirmacion al siguiente correo: <strong>{{personalRegistryModel.email}}</strong></h4>
+                  </div>
+                </div>
+              </div>
+              <a href="javascript:void(0)" data-dismiss="modal" class="button">Aceptar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD -->
+      <div id="div-confirmation-recovery" class="col-xs-4 col-xs-offset-4 hidden" [class.hidden]="type!=loginType.SEND_EMAIL_CONFIRMATION">
+        <p>Se ha enviado un correo a</p>
+        <h2 id="lb-forgot-email">{{ recoveryEmail }}</h2>
+        <h5>El link expirará en <span id="forgot-password-time">7</span> diás. Por favor revise su bandeja de entrada<br>y de clic en el link para cambiar su contraseña.</h5>
+        <h4><a id="accept-button" class="light-blue-button" (click)="type=loginType.LOGIN">Aceptar</a></h4>
+      </div>
+
+      <!-- CHANGE PASSWORD -->
+      <div id="change-password" class="hidden col-xs-4 col-xs-offset-4 recovery-password" [class.hidden]="type!=loginType.RECOVERY">
+        <p>Para cambiar la contraseña, por favor digite su nueva clave</p>
+        <form class="col-xs-4 col-xs-offset-4" #recoveryForm="ngForm" (ngSubmit)="sendRecovery()">
+          <div id="div-change-error" class="form-group text-left has-error hidden" [class.hidden]="recoveryError==''">
+            <h5 id="lb-change-error">{{ recoveryError }}</h5>
+          </div>
+          <div class="form-group pull-left full-width" [class.has-error]="!recoveryPass.valid&&!recoveryPass.pristine">
+            <div class="material-input " [class.has-error]="!recoveryPass.valid&&!recoveryPass.pristine">
+              <input type="password" required="" id="tb-change-password"  name="pass" required [(ngModel)]="recoveryModel.password" #recoveryPass="ngModel">
+              <label for="tb-change-password">
+                <span>Nueva Contraseña</span>
+              </label>
+              <span class="help-block text-left" for="tb-change-password">La contraseña es obligatoria</span>
+            </div>
+          </div>
+          <div class="form-group pull-left full-width" [class.has-error]="!recoveryPassConfirm.valid&&!recoveryPassConfirm.pristine">
+            <div class="material-input " [class.has-error]="!recoveryPassConfirm.valid&&!recoveryPassConfirm.pristine">
+              <input type="password" required="" id="tb-change-cPassword" name="passConfirm" required [(ngModel)]="recoveryModel.passwordConfirm" #recoveryPassConfirm="ngModel">
+              <label for="tb-change-cPassword">
+                <span>Confirmar Contraseña</span>
+              </label>
+              <span class="help-block text-left"  for="tb-change-cPassword">La confirmación de contraseña es obligatoria</span>
+            </div>
+          </div>
+          <div class="pull-left full-width">
+            <h5 id="div-password-messsage" style="color:red; font-size: 14px;" class="text-left info-message">La contraseña debe tener Minimo 8 caracteres, una mayuscula o una minuscula , un número y un caracter especial</h5>
+          </div>
+          <div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!Errorcharacters">
+            <h5 id="lb-login-error">La contraseña debe tener Minimo 8 caracteres, una mayuscula o una minuscula , un número y un caracter especial</h5>
+          </div>
+          <h4 class="pull-right"><button id="btn-change" class="light-blue-button" type="submit"  [disabled]="!recoveryForm.form.valid">GUARDAR</button></h4>
+        </form>
+      </div>
+
+      <!-- PERSONAL REGISTRY -->
+      <div id="personal-registry" class="text-left col-xs-8 col-xs-offset-2" [class.hidden]="type!=loginType.PERSONAL_REGISTRATION||loading">
+        <form  #personalRegistry="ngForm"  (ngSubmit)="sendPersonalRegistry(personalRegistry)">
+          <div class="form-group col-xs-12">
+            <h1>Registro personal</h1>
+          </div>
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="material-input " [class.has-error]="!registryName.valid && !registryName.pristine">
+                <input type="text" required=""  name="registryName" #registryName="ngModel" [(ngModel)]="personalRegistryModel.name" tabindex="1">
+                <label>
+                  <span>Nombre *</span>
+                </label>
+                <span class="help-block text-left">Campo requerido</span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="material-input " [class.has-error]="!registryLastName.valid && !registryLastName.pristine">
+                <input type="text" required="" name="registryLastName" #registryLastName="ngModel" [(ngModel)]="personalRegistryModel.lastName" tabindex="2">
+                <label>
+                  <span>Apellido *</span>
+                </label>
+                <span class="help-block text-left">Campo requerido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="material-input " [class.has-error]=" ! registryEmail.pristine && (!registryLastName.valid || errorEmail) " >
+                <input type="text" required="" id="tb" name="registryEmail" #registryEmail="ngModel" [(ngModel)]="personalRegistryModel.email" tabindex="3">
+                <label>
+                  <span>Correo Electrónico *</span>
+                </label>
+                <span class="help-block text-left">Email no válido o ya registrado</span>
+              </div>
+            </div>
+
+            <div class="col-xs-6">
+              <div class="material-input " [class.has-error]="! registryPhone.valid && !registryPhone.pristine" >
+                <input type="number" required="" id="phone" name="registryPhone" #registryPhone="ngModel" [(ngModel)]="personalRegistryModel.phone" tabindex="4">
+                <label>
+                  <span>Teléfono *</span>
+                </label>
+                <span class="help-block text-left">Campo requerido</span>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="form-group col-xs-12">
+
+            <div class="col-xs-6">
+              <div class="dropdown material-dropdown" [class.has-error]="errorDocumentType">
+                <label>Tipo de documento *</label>
+                <select class="selectpicker selects"  id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="true" tabindex="5" name="typeDocument" #registryName="ngModel" [(ngModel)]="personalRegistryModel.typeDocument">
+                  <option *ngFor="let d of documentsTypes" value="{{d.codigo}}">{{d.tipo}}</option>
+                </select>
+                <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" tabindex="5">
+                  {{selectTypeDocument}}
+                  <span class="caret"></span>
+                </a>
+                <span class="help-block text-left">Campo requerido</span>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li *ngFor="let d of documentsTypes"><a (click)="onSelectTypeDocument(d)" >{{d.tipo}}</a></li>
+                </ul>-->
+              </div>
+            </div>
+
+            <div class="col-xs-6">
+              <div class="material-input " [class.has-error]="!registryIdentification.valid && !registryIdentification.pristine || errorIdentification" >
+                <input type="number" required="" id="identification" name="registryIdentification" #registryIdentification="ngModel" [(ngModel)]="personalRegistryModel.identification" tabindex="6">
+                <label>
+                  <span>No de Documento *</span>
+                </label>
+                <span class="help-block text-left">Número de dentificación no valido o ya registrado</span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="material-input  " [class.has-error]="!registryPassword.pristine && (!registryPassword.valid||!validPassword())">
+                <input type="password" required="" name="registryPassword" #registryPassword="ngModel" [(ngModel)]="personalRegistryModel.password" tabindex="7">
+                <label>
+                  <span>Clave de acceso</span>
+                </label>
+                <span class="help-block text-left">La clave no cumple con los requisitos minimos de la clave</span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="material-input" [class.has-error]="!registryConfirmationPassword.pristine && (!registryConfirmationPassword.valid||personalRegistryModel.password!=personalRegistryModel.passwordConfirm )">
+                <input type="password" required="" id="confimationPassword" name="registryConfirmationPassword" #registryConfirmationPassword="ngModel" [(ngModel)]="personalRegistryModel.passwordConfirm" tabindex="8">
+                <label>
+                  <span>Confirmar clave de acceso</span>
+                </label>
+                <span class="help-block text-left">Las claves no coinciden</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <h5 id="" class="text-left info-message">Minimo 8 caracteres, una mayuscula o una minuscula y un número</h5>
+          </div>
+          <div class="col-xs-12">
+            <div class="check pull-left " [class.has-error]="!conditionRegistryValid ">
+              <input type="checkbox"  value="None" id="kansas-check-2" #registryConditions name="registryConditions" [(ngModel)]="personalRegistryModel.conditions" >
+              <label for="kansas-check-2" ></label>
+              <p >Al registrarme acepto que mi información puede ser usada de acuerdo a los <a href="https://helisa.com/legal/terminos-y-condiciones-generales/" target="_blank">Términos y Condiciones</a> y su <a href="https://helisa.com/legal/politica-de-tratamiento-de-datos-personales/" target="_blank">Políticas de Tratamientos de Datos Personales</a></p>
+              <span class="help-block text-left">Para continuar debe aceptar los terminos y condiciones</span>
+            </div>
+          </div>
+          <div class="col-xs-12 text-center">
+            <h4><button class="light-blue-button" type="button" (click)="type=loginType.LOGIN" tabindex="12">CANCELAR</button></h4>
+            <h4><button  class="light-blue-button"  type="submit" style="margin: 0px"  tabindex="13" data-toggle="modal"  data-target="#newModal" >GUARDAR</button></h4>
+          </div>
+        </form>
+      </div>
+
+      <!-- COMPANY REGISTRY -->
+      <div id="company-registry" class="text-left col-xs-8 col-xs-offset-2 " [class.hidden]="type!=loginType.COMPANY_REGISTRATION">
+        <form>
+          <div class="form-group col-xs-12">
+            <h1>Registro Empresa</h1>
+          </div>
+          <div class="form-group col-xs-12">
+            <div class="col-xs-12">
+              <div class="material-input">
+                <input type="text" required="" id="">
+                <label>
+                  <span>Nombre de la Empresa *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="dropdown material-dropdown">
+                <label>Cantidad de minutos *</label>
+                <span class="help-block text-left">Mensaje de error</span>
+                <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Dropdown
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" id="">
+                <label>
+                  <span>Numero de Documento *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" >
+                <label>
+                  <span>Telefono *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" id="">
+                <label>
+                  <span>Pais *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-xs-12">
+            <div class="col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" id="">
+                <label>
+                  <span>Ciudad *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+            <div class="col-xs-6">
+              <div class="material-input">
+                <input type="text" required="" id="">
+                <label>
+                  <span>Dirección *</span>
+                </label>
+                <span class="help-block text-left">Mensaje de error</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <h5 id="min" class="text-left info-message">Minimo 8 caracteres, una mayuscula o una minuscula y un número</h5>
+          </div>
+          <div class="col-xs-12">
+            <div class="check pull-left">
+              <input type="checkbox" value="None" id="kansas-check-1">
+              <label for="kansas-check-1"></label>
+              <p>Al registrarme acepto que mi información puede ser usada de acuerdo a los <a href="http://helisa.com/terminos-y-condiciones.php"  target="_blank" >términos y condiciones</a> y su <a href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">política de privacidad.</a></p>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <h4 class="pull-left"><button id="" class="light-blue-button" type="button">CANCELAR</button></h4>
+            <h4 class="pull-right"><button id="" class="light-blue-button" type="button">GUARDAR</button></h4>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  
+
+</section>
+<footer>
+  <div class="container text-center">
+    <h6>© 2016 Helisa. Todos los derechos reservados | <a href="http://helisa.com/terminos-y-condiciones.php" target="_blank">Términos y Condiciones</a> - <a href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Aviso Legal</a></h6>
+    <h6>v1.0</h6>
+  </div>
+</footer>
+
+
+
+<!--<header></header>-->
+<!--<section>-->
+  <!--<div id="dujo-login-container" class="container kansas-login text-center">-->
+    <!--<div id="dujo-login-content" class="row">-->
+      <!--<img src="/assets/img/logo.png">-->
+
+      <!--&lt;!&ndash; LOGIN FORM &ndash;&gt;-->
+      <!--<div id="login-form" class="col-xs-4 col-xs-offset-4" [class.hidden]="type!=loginType.LOGIN">-->
+        <!--<form (ngSubmit)="submit()" #login="ngForm">-->
+          <!--<div id="div-login-error" class="form-group text-left has-error" [class.hidden]="!loginError">-->
+            <!--<h5 id="lb-login-error">El correo o la contraseña no coinciden</h5>-->
+          <!--</div>-->
+          <!--<div id="div-login-person" class="form-group relative-position" [class.has-error]="!username.valid">-->
+            <!--<input type="text" name="email" id="tb-login-user" placeholder="Nombre de usuario" required [(ngModel)]="model.username" #username="ngModel">-->
+            <!--<div class="error-message-container">-->
+              <!--<div class="error-message-content" id="error-message-test-content-section">-->
+                <!--<div>-->
+                  <!--<span class="icon icon-warning"></span>-->
+                  <!--<p>El nombre de usuario es obligatorio</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div id="div-login-key" class="form-group relative-position" [class.has-error]="!password.valid && !password.pristine">-->
+            <!--<input type="password" name="password" id="tb-login-password" placeholder="Contraseña" required [(ngModel)]="model.password" #password="ngModel">-->
+            <!--<div class="error-message-container">-->
+              <!--<div class="error-message-content" id="error-message-test-content-section">-->
+                <!--<div>-->
+                  <!--<span class="icon icon-warning"></span>-->
+                  <!--<p>El password es obligatorio</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<h4 class="pull-left"><a id="forgot-password-button" href="javascript:void(0)" (click)="type=loginType.SEND_EMAIL">¿Olvido su contraseña?</a></h4>-->
+          <!--<h2 class="pull-right"><button type="submit" id="btn-session" class="light-blue-button" [disabled]="!login.form.valid">Ingresar</button></h2>-->
+        <!--</form>-->
+
+      <!--</div>-->
+
+      <!--&lt;!&ndash; FORGOT PASSWORD &ndash;&gt;-->
+      <!--<div id="forgot-password" [class.hidden]="type!=loginType.SEND_EMAIL">-->
+        <!--<p>Para restablecer la contraseña, introduce la dirección de correo electrónico</p>-->
+        <!--<form (ngSubmit)="sendRecoveryEmail()" class="col-xs-4 col-xs-offset-4" #recoveryEmailForm="ngForm">-->
+          <!--<div id="forgot-password-error-message" class="form-group text-left has-error hidden" [class.hidden]="!recoveryEmailError">-->
+            <!--<h5 id="lb-recovery-error">Ocurrio un error, intentelo de nuevo</h5>-->
+          <!--</div>-->
+          <!--<div id="div-recovery-email" class="form-group has-error relative-position" [class.has-error]="!recoveryEmailInput.valid&&!recoveryEmailInput.pristine">-->
+            <!--<input type="text" id="tb-recovery-email" placeholder="Correo Electrónico" name="email" required [(ngModel)]="recoveryEmail" #recoveryEmailInput="ngModel">-->
+            <!--<div class="error-message-container">-->
+              <!--<div class="error-message-content" id="error-message-test-content-section">-->
+                <!--<div>-->
+                  <!--<span class="icon icon-warning"></span>-->
+                  <!--<p>Ingrese un correo valido</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<h4 class="pull-left"><button type="button" id="btn-recovery-cancel" (click)="type=loginType.LOGIN">Cancelar</button></h4>-->
+          <!--<h2 class="pull-right"><button id="btn-recovery" class="light-blue-button" type="submit" [disabled]="!recoveryEmailForm.form.valid">Enviar</button></h2>-->
+        <!--</form>-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash; FORGOT PASSWORD MESSAGE &ndash;&gt;-->
+      <!--<div id="forgot-password-message" class="col-xs-4 col-xs-offset-4 hidden">-->
+        <!--<h5>Espere un momento</h5>-->
+        <!--<span></span>-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash; FORGOT PASSWORD &ndash;&gt;-->
+      <!--<div id="div-confirmation-recovery" class="col-xs-4 col-xs-offset-4 hidden" [class.hidden]="type!=loginType.SEND_EMAIL_CONFIRMATION">-->
+        <!--<p>Se ha enviado un correo a</p>-->
+        <!--<h2 id="lb-forgot-email">{{ recoveryEmail }}</h2>-->
+        <!--<h5>El link expirará en <span id="forgot-password-time">7</span> diás. Por favor revise su bandeja de entrada<br>y de clic en el link para cambiar su contraseña.</h5>-->
+        <!--<h2><a id="accept-button" class="light-blue-button" (click)="type=loginType.LOGIN">Aceptar</a></h2>-->
+      <!--</div>-->
+
+      <!--&lt;!&ndash; CHANGE PASSWORD &ndash;&gt;-->
+      <!--<div id="change-password" class="hidden" [class.hidden]="type!=loginType.RECOVERY">-->
+        <!--<p>Para cambiar la contraseña, por favor digite su nueva clave</p>-->
+        <!--<form class="col-xs-4 col-xs-offset-4" #recoveryForm="ngForm" (ngSubmit)="sendRecovery()">-->
+          <!--<div id="div-change-error" class="form-group text-left has-error hidden" [class.hidden]="recoveryError==''">-->
+            <!--<h5 id="lb-change-error">{{ recoveryError }}</h5>-->
+          <!--</div>-->
+          <!--<div class="form-group has-error relative-position" [class.has-error]="!recoveryPass.valid&&!recoveryPass.pristine">-->
+            <!--<input type="password" id="tb-change-password" placeholder="Nueva Contraseña" name="pass" required [(ngModel)]="recoveryModel.password" #recoveryPass="ngModel">-->
+            <!--<div class="error-message-container">-->
+              <!--<div class="error-message-content" id="error-message-test-content-section">-->
+                <!--<div>-->
+                  <!--<span class="icon icon-warning"></span>-->
+                  <!--<p>La contraseña es obligatoria</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="form-group relative-position" [class.has-error]="!recoveryPassConfirm.valid && !recoveryPassConfirm.pristine">-->
+            <!--<input type="password" id="tb-change-cPassword" placeholder="Confirmar Contraseña" name="passConfirm" required [(ngModel)]="recoveryModel.passwordConfirm" #recoveryPassConfirm="ngModel">-->
+            <!--<div class="error-message-container">-->
+              <!--<div class="error-message-content" id="error-message-test-content-section">-->
+                <!--<div>-->
+                  <!--<span class="icon icon-warning"></span>-->
+                  <!--<p>La confirmación de contraseña es obligatoria</p>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<h5 id="div-password-messsage" class="text-left info-message">Minimo 8 caracteres, una mayuscula o una minuscula y un número</h5>-->
+          <!--<h4 class="pull-left"><button type="button" id="btn-change-cancel" (click)="refresh()">Cancelar</button></h4>-->
+          <!--<h2 class="pull-right"><button id="btn-change" class="light-blue-button" type="submit" [disabled]="!recoveryForm.form.valid">Aceptar</button></h2>-->
+        <!--</form>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</section>-->
+<!--<footer>-->
+  <!--<div class="container text-center">-->
+    <!--<h6>© 2016 Helisa. Todos los derechos reservados | <a>Términos y Condiciones</a> - <a>Aviso Legal</a></h6>-->
+    <!--<h6>v1.0</h6>-->
+  <!--</div>-->
+<!--</footer>-->

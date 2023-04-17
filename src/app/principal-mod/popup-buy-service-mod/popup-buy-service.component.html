@@ -1,0 +1,331 @@
+<div class="modal fade in" id="technicalVisit" tabindex="-1" role="dialog" aria-labelledby="technicalVisitLabel"
+  aria-hidden="false" style="display: block">
+  <div class="modal-dialog big">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button (click)="back()" type="button" data-dismiss="modal">
+          <span></span>
+        </button>
+        <div class="admin-form">
+          <h2 class="pull-left full-width text-center">{{titlePopup}}</h2>
+          <h5 *ngIf="!showFormInfoCreditCard && !showAceptar">{{textValueWithCost}}</h5>
+          <form role="form" #form="ngForm">
+            <button hidden="true" (click)="validationValues()" id="buttonValidationValues"></button>
+            <!--Informacion Exogena -->
+            <div *ngIf="typeService==idInfoExogena" class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                  <div class="form-group material-input" [class.has-error]="errorInformacionExogenaNit"
+                    [class.hidden]="stepInformacionExogena>1">
+                    <input type="text" required="" [(ngModel)]="informacionExogenaNit"
+                      [ngModelOptions]="{standalone: true}">
+                    <label>
+                      <span>NIT de la Empresa *</span>
+                    </label>
+                    <span>El nit de la empresa no fue encontrado.</span>
+                  </div>
+                  <div class="form-group material-input "
+                    [class.hidden]="stepInformacionExogena>2||stepInformacionExogena<2">
+                    <input type="text" required="" [(ngModel)]="informacionExogenaEmpresa"
+                      [ngModelOptions]="{standalone: true}" disabled>
+                    <!--<label>
+                      <span>Empresa</span>
+                    </label>-->
+                  </div>
+                  <div class="form-group material-input " [class.has-error]="errorInformacionExogenaLicencia"
+                    [class.has-valid]="licenciaValid"
+                    [class.hidden]="stepInformacionExogena>2||stepInformacionExogena<2">
+                    <input type="text" required="" [(ngModel)]="informacionExogenaLicencia"
+                      [ngModelOptions]="{standalone: true}">
+                    <label>
+                      <span>Licencia de la Empresa *</span>
+                    </label>
+                    <span>{{textLicenciaValid}}</span>
+                  </div>
+                  <div class="text-center pull-left full-width">
+                    <a class="btn gray validate-btn" (click)="validate()">Validar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Helisa Cloud -->
+            <div *ngIf="typeService==idHelisaCloud&&!showFormInfoCreditCard && !showAceptar"
+              class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div class="form-group material-input">
+                  <input min="1" type="number" [(ngModel)]="quantityAccess" [ngModelOptions]="{standalone: true}"
+                    (keyup)="onChangeQuantityAccess()" (click)="onChangeQuantityAccess()" required>
+                  <label>
+                    <span>Cantidad de accesos *</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!--Valor del abono-->
+            <div *ngIf="typeService==idWalletPayment" class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div class="form-group material-input">
+                  <input type="number" min=1 [(ngModel)]="objectSelected.price" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Valor del abono *</span>
+                  </label>
+                </div>
+
+              </div>
+              <div class="col-sm-6">
+                <div  *ngIf="showReteIca" class="form-group material-input">
+                  <div class="col-sm-5">
+                    <label>Rete ICA ({{profile.reteica}}):</label>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="number" name="reteIca" [(ngModel)]="this.objectSelected.carterIca"
+                      style="font-size: 14px !important; margin-left: -25px !important;">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group material-input">
+                  <input type="text" [(ngModel)]="objectSelected.referenceBill" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Factura *</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div  *ngIf="showIvaReteIva" class="form-group material-input">
+                    <div class="col-sm-5">
+                      <label>Rete IVA (15%):</label>
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="number" name="reteIca" [(ngModel)]="this.objectSelected.carterIva"
+                        style="font-size: 14px !important; margin-left: -25px !important;">
+                    </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group material-input">
+                  <input type="text" [(ngModel)]="objectSelected.referenceText" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Descripción *</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <!--Asistencia Remota -->
+            <div class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                  <div *ngIf="typeService==idRemoteAssistant" class="dropdown material-dropdown">
+                    <label>Cantidad de minutos *</label>
+                    <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                      {{ objectSelected.minutes }}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let item of listRemoteAssistant">
+                        <a (click)="onSelectHoursForRemoteAssistants(item)">{{item}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Fin Asistencia Remota-->
+            <!--Implementacion-->
+            <div *ngIf="typeService==idImplement" class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                  <div class="dropdown material-dropdown">
+                    <label>Seleccione el Producto *</label>
+                    <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                      {{objectSelected.modulo}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let servicio of listaServiciosImplementacionHoras">
+                        <a (click)="onSelectProduct(servicio)">{{servicio.modulo}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                  <div class="dropdown material-dropdown">
+                    <label>Horas del Servicio *</label>
+                    <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                      {{getImplementationHours()}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let h of listHoursImplementation">
+                        <a (click)="onSelectHoursImplementation(h)">{{h}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="typeService==idTechnicalVisit" class="form-group pull-left full-width">
+              <div class="col-sm-8 col-sm-offset-2">
+                <div>
+                  <div class="dropdown material-dropdown">
+                    <label>Horas del Servicio *</label>
+                    <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="true">
+                      {{getTechnicalVisitHours()}}
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li *ngFor="let h of listHoursTechnicalVisit">
+                        <a (click)="onChangeHoursInTechnicalVisit(h)">{{h}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--Fin Visita Tecnica-->
+            <!--formulario tarjeta de credito-->
+            <div *ngIf="showAceptar" class="form-group pull-left full-width text-center">
+              {{successMessage}}
+            </div>
+
+            <div *ngIf="showFormInfoCreditCard" class="form-group pull-left full-width">
+              <div class="col-sm-6">
+                <div class="form-group material-input">
+                  <input type="text" [(ngModel)]="objectFormDataCredir.name" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Nombre de la Tarjeta de Crédito *</span>
+                  </label>
+                </div>
+                <div class="form-group material-input">
+                  <input type="number" [(ngModel)]="objectFormDataCredir.idBuyer" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Número de identificación*</span>
+                  </label>
+                </div>
+                <div class="form-group material-input">
+                  <input max=12 [min]="expireDate.month" type="number" [(ngModel)]="objectFormDataCredir.mothExpiration"
+                    [ngModelOptions]="{standalone: true}" required>
+                  <label>
+                    <span>Mes de expiracion *</span>
+                  </label>
+                </div>
+                <div class="form-group material-input">
+                  <input type="text" [(ngModel)]="objectFormDataCredir.cityCard" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Ciudad *</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group material-input" [class.has-error]="numberCreditCardValid">
+                  <input type="number" [(ngModel)]="objectFormDataCredir.numberCreditCard"
+                    [ngModelOptions]="{standalone: true}" required>
+                  <label>
+                    <span>Número de la Tarjeta de Crédito *</span>
+                  </label>
+                  <span class="help-block text-left">Número de tarjeta de crédito incorrecta.</span>
+                </div>
+                <div class="form-group material-input" [class.has-error]="yearCreditCardValid">
+                  <input type="number" [(ngModel)]="objectFormDataCredir.yearExpiration"
+                    [ngModelOptions]="{standalone: true}" required>
+                  <label>
+                    <span>Año de expiracion *</span>
+                  </label>
+                  <span class="help-block text-left">Año de expiración incorrecta.</span>
+                </div>
+                <div class="form-group material-input">
+                  <input type="text" [(ngModel)]="objectFormDataCredir.address" [ngModelOptions]="{standalone: true}"
+                    required>
+                  <label>
+                    <span>Dirección *</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="showTable() && !showAceptar" class="admin-description-section">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Descripción del Pago</th>
+                    <th class="text-center">Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Total productos:</td>
+                    <td class="text-right">{{dataTable.totalProductos-dataTable.iva+dataTable.reteIca+dataTable.reteIva|
+                      currency:'USD':true:'2.2-2'}}</td>
+                  </tr>
+                  <tr *ngIf="showIva">
+                    <td>IVA ({{IVA*100}}%):</td>
+                    <td class="text-right">{{dataTable.iva| currency:'USD':true:'2.2-2'}}</td>
+                  </tr>
+                  <tr *ngIf="showReteIca">
+                    <td>ReteICA ({{profile.reteica}}):</td>
+                    <td class="text-right"> - {{dataTable.reteIca| currency:'USD':true:'2.2-2'}}</td>
+                  </tr>
+                  <tr *ngIf="showIvaReteIva">
+                    <td>ReteIVA (15%) :</td>
+                    <td class="text-right"> - {{dataTable.reteIva| currency:'USD':true:'2.2-2'}}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td><b>Pago Total:</b></td>
+                    <td class="text-right"><b>{{(dataTable.totalProductos)| currency:'USD':true:'2.2'}}</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+              <img src="images/bg-colors.png">
+            </div>
+            <div *ngIf="typeService==idHelisaCloud && !showFormInfoCreditCard && !showAceptar" class="recurring">
+              <input id="paymentR" type="checkbox" [checked]="activateRecurringPayment"
+                (click)="onCheckedPaymentRecurring()" [disabled]="showButtonDeactivate">
+              <label>Activar pago recurrente</label>
+            </div>
+            <div *ngIf="moreThreeService">
+              <h2 class="pull-left full-width text-center">Visita Técnica</h2>
+              <h5>No puedes comprar mas de dos servicios juntos, por favor verificar</h5>
+            </div>
+            <div *ngIf="!activateRecurringPayment && !showAceptar" class="text-center">
+              <button (click)="goToStepsPayment()" class="btn gray" [disabled]="disableButtonPayNow">Pagar
+                Ahora</button>
+              <a *ngIf="showButtonAddToCar" (click)="addToShoppingCar(true)" class="btn gray">Añadir al Carrito</a>
+            </div>
+            <div class="text-center">
+              <button
+                *ngIf="activateRecurringPayment && !showFormInfoCreditCard && !showAceptar &&!showButtonDeactivate"
+                (click)="goToFormDataCredit()" class="btn gray">Siguiente</button>
+              <button *ngIf="activateRecurringPayment && showButtonDeactivate && !showAceptar"
+                (click)="cancelRecurringPayment()" class="btn gray">Desactivar pago recurrente</button>
+              <!-- desactivarPago && show -->
+              <button *ngIf="activateRecurringPayment && showButtonDeactivate && !showAceptar" (click)="changePlan()"
+                class="btn gray">Cambiar Plan</button> <!-- showChange && show -->
+            </div>
+            <div class="text-center">
+              <button *ngIf="showFormInfoCreditCard" (click)="onFinishRecurringPayment()"
+                class="btn gray">Finalizar</button><!-- (click)="onFinishRecurringPayment()"-->
+            </div>
+            <div class="text-center">
+              <button *ngIf="showAceptar" (click)="back()" class="btn gray">Aceptar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade in"></div>

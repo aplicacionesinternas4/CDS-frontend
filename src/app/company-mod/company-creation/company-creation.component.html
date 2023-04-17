@@ -1,0 +1,849 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <!--<a href="javascript:void(0)">Nombre de la company</a>-->
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+  </div>
+  <div class="admin-form text-center">
+    <div class="edit-admin-profile">
+      <h2 class="text-left">Registrar Empresa</h2>
+      <form #companyRegistry="ngForm" (ngSubmit)="sendCompanyRegistry(companyRegistry)" class="text-left">
+        <div class="col-xs-12">
+          <div class="material-input" [class.has-error]="!registryName.valid && !registryName.pristine">
+            <input type="text" required="" name="name" #registryName="ngModel" [(ngModel)]="companyRegistryModel.name"
+              tabindex="1">
+            <label>
+              <span>Nombre de la Empresa *</span>
+            </label>
+            <span class="help-block text-left">Campo requerido</span>
+          </div>
+        </div>
+
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown" [class.has-error]="errorDocumentType">
+              <label>Tipo de documento *</label>
+
+              <select class="selectpicker selects" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true" tabindex="2" name="typeDocument" #registryName="ngModel"
+                [(ngModel)]="companyRegistryModel.typeDocument">
+                <option *ngFor="let d of documentsTypes" value="{{d.codigo}}">{{d.tipo}}</option>
+              </select>
+
+
+
+              <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" tabindex="2">
+                {{selectTypeDocument}}
+                <span class="caret"></span>
+              </a>
+              <span class="help-block text-left">Campo requerido</span>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let d of documentsTypes"><a (click)="onSelectTypeDocument(d)">{{d.tipo}}</a></li>
+              </ul>-->
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="material-input"
+              [class.has-error]="(errorDocumento || !registryDocument.valid) && !registryDocument.pristine ">
+              <input type="number" required="" name="document" #registryDocument="ngModel"
+                [(ngModel)]="companyRegistryModel.numberDocument" tabindex="3">
+              <label>
+                <span>Numero de Documento *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown" [class.has-error]="errorCountry">
+              <label>Pais *</label>
+
+              <select class="selectpicker selects" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true" tabindex="4" name="country" #registryName="ngModel"
+                [(ngModel)]="companyRegistryModel.country" (ngModelChange)="onSelectCountry()">
+                <!--validacion ciudades por pais ys 23-04-2018-->
+                <option *ngFor="let d of country" value="{{d.id}}">{{d.nombre}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown " [class.has-error]="errorCity">
+              <label>Ciudad *</label>
+
+              <select class="selectpicker selects" id="dropdownMenu3" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true" tabindex="5" name="city" #registryName="ngModel"
+                [(ngModel)]="companyRegistryModel.city">
+                <option *ngFor="let d of cities" value="{{d.id}}">{{d.nombre}} - {{d.departamento.nombre}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <div class="material-input" [class.has-error]="!registryAddress.valid && !registryAddress.pristine">
+              <input type="text" required="" name="address" #registryAddress="ngModel"
+                [(ngModel)]="companyRegistryModel.address" tabindex="6">
+              <label>
+                <span>Dirección *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="material-input"
+              [class.has-error]="(!registryEmail.valid || !validEmail() || !emailHasError()) && !registryEmail.pristine">
+              <input type="text" required="" name="email" #registryEmail="ngModel"
+                [(ngModel)]="companyRegistryModel.email" tabindex="7">
+              <label>
+                <span>Email *</span>
+              </label>
+              <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <div class="material-input" [class.has-error]="!registryTelephone.valid && !registryTelephone.pristine">
+              <input type="number" required="" id="telephone" name="telephone" #registryTelephone="ngModel"
+                [(ngModel)]="companyRegistryModel.telephone" tabindex="9">
+              <label>
+                <span>Telefono *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown ">
+              <label>Tipo de Contribuyente *</label>
+              <select class="selectpicker selects" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true" tabindex="8" name="regimen" #registryName="ngModel"
+                [(ngModel)]="companyRegistryModel.regimen">
+                <option *ngFor="let d of regimens" value="{{d.id}}">{{d.nombre}}</option>
+              </select>
+              <br><br>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <p>
+            Si <a> {{companyRegistryModel.name}} </a> tiene la obligación tributaria de retener impuestos, seleccione 
+            las opciones de impuestos que debe retener y complete el campo relacionado con la secretaria municipal/distrital a 
+            la cual consigna la retención del impuesto de industria y comercio.
+          </p>
+          <div class="col-xs-3 pull-left">
+            <label><input type="checkbox" name="checkReteIVA" (click)="validacionRETE('IVA')" [(ngModel)]="reteIVA">
+              RETEIVA *</label>
+          </div>
+          <div class="col-xs-3">
+            <label><input type="checkbox" name="checkReteICA" (click)="validacionRETE('ICA')" [(ngModel)]="reteICA">
+              RETEICA *</label>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <br>
+          <p>
+            Seleccione los CODIGOS de Responsabilidades, Calidades y Atributos <br>
+            <b>(COMO APARECEN EN EL RUT ACTUALIZADO)</b>
+          </p>
+          <input type="button" data-toggle="modal" data-target="#responsabilidades" id="sinMinutos"
+            class="btn m-0 m-left" value="Seleccionar">
+          <div>
+            <br>
+            <div class="col-xs-2 pull-left" *ngIf="check01">
+              <label><input [(ngModel)]="check01" name="checkbox01" type="checkbox"> 01. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check02">
+              <label><input [(ngModel)]="check02" name="checkbox02" type="checkbox"> 02. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check03">
+              <label><input [(ngModel)]="check03" name="checkbox03" type="checkbox"> 03. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check04">
+              <label><input [(ngModel)]="check04" name="checkbox04" type="checkbox"> 04. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check05">
+              <label><input [(ngModel)]="check05" name="checkbox05" type="checkbox"> 05. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check06">
+              <label><input [(ngModel)]="check06" name="checkbox06" type="checkbox"> 06. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check07">
+              <label><input [(ngModel)]="check07" name="checkbox07" type="checkbox"> 07. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check08">
+              <label><input [(ngModel)]="check08" name="checkbox08" type="checkbox"> 08. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check09">
+              <label><input [(ngModel)]="check09" name="checkbox09" type="checkbox"> 09. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check10">
+              <label><input [(ngModel)]="check10" name="checkbox10" type="checkbox"> 10. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check13">
+              <label><input [(ngModel)]="check13" name="checkbox13" type="checkbox"> 13. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check14">
+              <label><input [(ngModel)]="check14" name="checkbox14" type="checkbox"> 14. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check15">
+              <label><input [(ngModel)]="check15" name="checkbox15" type="checkbox"> 15. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check16">
+              <label><input [(ngModel)]="check16" name="checkbox16" type="checkbox"> 16. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check17">
+              <label><input [(ngModel)]="check17" name="checkbox17" type="checkbox"> 17. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check18">
+              <label><input [(ngModel)]="check18" name="checkbox18" type="checkbox"> 18. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check19">
+              <label><input [(ngModel)]="check19" name="checkbox19" type="checkbox"> 19. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check20">
+              <label><input [(ngModel)]="check20" name="checkbox20" type="checkbox"> 20. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check21">
+              <label><input [(ngModel)]="check21" name="checkbox21" type="checkbox"> 21. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check22">
+              <label><input [(ngModel)]="check22" name="checkbox22" type="checkbox"> 22. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check23">
+              <label><input [(ngModel)]="check23" name="checkbox23" type="checkbox"> 23. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check24">
+              <label><input [(ngModel)]="check24" name="checkbox24" type="checkbox"> 24. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check26">
+              <label><input [(ngModel)]="check26" name="checkbox26" type="checkbox"> 26. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check32">
+              <label><input [(ngModel)]="check32" name="checkbox32" type="checkbox"> 32. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check35">
+              <label><input [(ngModel)]="check35" name="checkbox35" type="checkbox"> 35. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check36">
+              <label><input [(ngModel)]="check36" name="checkbox36" type="checkbox"> 36. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check37">
+              <label><input [(ngModel)]="check37" name="checkbox37" type="checkbox"> 37. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check38">
+              <label><input [(ngModel)]="check38" name="checkbox38" type="checkbox"> 38. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check39">
+              <label><input [(ngModel)]="check39" name="checkbox39" type="checkbox"> 39. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check40">
+              <label><input [(ngModel)]="check40" name="checkbox40" type="checkbox"> 40. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check41">
+              <label><input [(ngModel)]="check41" name="checkbox41" type="checkbox"> 41. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check42">
+              <label><input [(ngModel)]="check42" name="checkbox42" type="checkbox"> 42. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check47">
+              <label><input [(ngModel)]="check47" name="checkbox47" type="checkbox"> 47. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check48">
+              <label><input [(ngModel)]="check48" name="checkbox48" type="checkbox"> 48. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check49">
+              <label><input [(ngModel)]="check49" name="checkbox49" type="checkbox"> 49. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check50">
+              <label><input [(ngModel)]="check50" name="checkbox50" type="checkbox"> 50. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check51">
+              <label><input [(ngModel)]="check51" name="checkbox51" type="checkbox"> 51. </label>
+            </div>
+            <div class="col-xs-2 pull-left" *ngIf="check52">
+              <label><input [(ngModel)]="check52" name="checkbox52" type="checkbox"> 52. </label>
+            </div>
+          </div>
+          <br>
+        </div>
+        <br><br>
+        <div class="col-xs-12">
+          <div class="col-xs-6">
+            <br>
+            <p>Ciudad Para ReteICA</p>
+          <div class="dropdown material-dropdown " >
+            <label>Ciudad Para ReteICA*</label>
+            <select class="selectpicker selects" (click)="calR()" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="true" tabindex="5" name="cityRetencion" #registryName="ngModel"
+              [(ngModel)]="companyRegistryModel.cityICA">
+              <option *ngFor="let d of cities" value="{{d.id}}">{{d.nombre}} - {{d.departamento.nombre}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-xs-12" *ngIf="cityReteICAselect2">
+          <p>Tarifa ReteICA (Sugerido por defecto)</p>
+          <div class="col-xs-2">
+            <label><input type="checkbox" name="checkRetexmil" (click)="validateICAXmil()" [(ngModel)]="xmil">
+              * Mil</label>
+          </div>
+          <div class="col-xs-3">
+            <label><input type="checkbox" name="checkRetePorcent" (click)="validateICAPorcent()" [(ngModel)]="porcent">
+              Porcentaje %</label>
+          </div>
+          <br>
+        </div>
+        <div class="col-xs-12" *ngIf="cityReteICASelect">
+          <p>Tarifa ReteICA (Sugerido por defecto)</p>
+          <div class="col-xs-2">
+            <label><input type="checkbox" name="checkRetexmil" (click)="validateICAXmilSelect()" [(ngModel)]="xmilSelect">
+              * Mil</label>
+          </div>
+          <div class="col-xs-3">
+            <label><input type="checkbox" name="checkRetePorcent" (click)="validateICAPorcentSelect()" [(ngModel)]="porcentSelect">
+              Porcentaje %</label>
+          </div>
+          <br>
+        </div>
+        <div class="col-xs-12" *ngIf="cityReteICASelect"><!---->
+          <div class="col-xs-4" *ngIf="xmilSelect">
+          <select class="selectpicker selects" [(ngModel)]="xmilSelectValue" name="datosXmil">
+            <option *ngFor="let dato of datosXmil" >{{dato}}</option>
+          </select>
+        </div>
+        <div class="col-xs-4" *ngIf="porcentSelect">
+          <select class="selectpicker selects" [(ngModel)]="porcentSelectValue" name="datosPor" >
+            <option *ngFor="let dato of datosPor">{{dato}}</option>
+          </select>
+        </div>
+        </div>
+        </div>
+        <div *ngIf="cityReteICAselect2">
+        <div class="col-xs-12" *ngIf="xmil">
+          <div class="col-xs-5">
+            <div class="material-input" disable>
+              <input type="text" required="" [(ngModel)]="reteICAXmil" name="tarifa_xmil">
+              <label>
+                <span>Tarifa ReteICA X Mil</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12" *ngIf="porcent">
+          <div class="col-xs-5">
+            <div class="material-input" disable>
+              <input type="text" required="" [(ngModel)]="reteICAPor" name="tarifa_xpor">
+              <label>
+                <span>Tarifa ReteICA %</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="col-xs-12">
+          <div class="col-xs-12">
+            <br>
+            
+            <div class="material-input">
+              <p>Correo electrónico donde se solicitan los certificados de las retenciones que practicarán</p>
+              <input type="text" required="" [(ngModel)]="companyRegistryModel.emailRetencion" name="email"
+                tabindex="7" placeholder="Ejemplo@gmail.com">
+            </div>
+          </div>
+        </div>
+    <div class="col-xs-12">
+      <br>
+      <p>Favor ADJUNTAR copia de su RUT actualizado, recuerden que si actualizan el RUT deberan cargarlo nuevamente 
+        desde la función Editar Empresa.</p>
+      <div class="col-xs-8">
+        <div class="material-input">
+          <input type="file" id="file" (change)="onFileChange($event)" name="file" [(ngModel)]="uploadFile"
+            accept=".pdf,.jpeg">
+          <div class="">
+            <div class="">
+              <label style="color: blue !important;" id="info5" for="">Los archivos solo pueden ser .pdf o .jpeg</label>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12">
+      <p>
+        Usted entiende y acepta las responsabilidades tributarias y legales contempladas en la legislación colombiana. Confirma que las sumas que retendrá serán consignadas a la DIAN y las respectivas secretarias de hacienda distrital/municipal 
+        y que de no hacerlo entiende que puede verse inmerso en delitos de peculado por apropiación conforme al ARTICULO 665. 
+        RESPONSABILIDAD PENAL POR NO CONSIGNAR LAS RETENCIONES EN LA FUENTE Y EL IVA. 
+      </p>
+      <br><br>
+    </div>
+
+    <h2 class="text-left">Datos de Facturación Electrónica</h2>
+    <div class="col-xs-12">
+      <p>
+        PROASISTEMAS S.A. ha dispuesto para sus clientes la emisión electrónica de la factura de venta según la
+        Resolución N° 006290 del 18 de agosto de 2017 expedida por la DIAN, de acuerdo a las condiciones del Decreto
+        2242 de 2015 que la regula, usted podrá consultar estos documentos a través del centro de servicios Helisa,
+        sección Facturas o en su defecto, mediante un link enviado por correo electrónico junto al usuario y contraseña
+        de acceso al portal de consulta.
+      </p>
+      <p>
+        En dichos portales podrá verificar y descargar la factura y estará disponible al menos por 3 meses después de la
+        fecha de emisión. En caso de ser necesario la impresión de este documento, la visualización del documento se
+        adapta a la configuración de la impresora que tenga instalada.
+      </p>
+      <p>
+        Lo invitamos a complementar la información de contacto relacionada con la factura electrónica.
+      </p>
+    </div>
+
+    <div class="col-xs-12 col-xs-6">
+      <div class="material-input">
+        <input type="text" required="" [(ngModel)]="userBilling.name" name="userbillingName">
+        <label>
+          <span>Nombre del responsable</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6">
+      <div class="material-input">
+        <input type="number" required="" [(ngModel)]="userBilling.phone" name="userbillingPhone">
+        <label>
+          <span>Télefono</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-xs-6">
+      <div class="material-input">
+        <input type="text" required="" [(ngModel)]="userBilling.position" name="userbillingPosition">
+        <label>
+          <span>Cargo</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6">
+      <div class="material-input"
+        [class.has-error]=" !emailBilling.pristine && (!emailBilling.valid  || !validEmail(userBilling.email))">
+        <input type="text" required="" [(ngModel)]="userBilling.email" name="emailBilling" #emailBilling="ngModel">
+        <label>
+          <span>Correo Electronico</span>
+        </label>
+        <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+        <br><br>
+      </div>
+    </div>
+
+    <div class="col-xs-12">
+      <div class="check pull-left" [class.has-error]="!conditionRegistryValid ">
+        <input type="checkbox" value="None" id="kansas-check-1" #registryConditions name="registryConditions"
+          [(ngModel)]="companyRegistryModel.conditions" tabindex="10">
+        <label for="kansas-check-1"></label>
+        <p>Al registrarme acepto que mi información puede ser usada de acuerdo a los <a
+            href="http://helisa.com/terminos-y-condiciones.php" target="_blank">Términos y Condiciones</a> y su <a
+            href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Políticas de
+            Tratamientos de Datos Personales</a></p>
+        <span class="help-block text-left">Para continuar debe aceptar los terminos y condiciones</span>
+      </div>
+    </div>
+    <div class="col-xs-12 text-center">
+      <h4>
+        <button class="light-blue-button" type="button" (click)="back()" tabindex="11">CANCELAR</button>
+      </h4>
+      <h4>
+        <button class="light-blue-button" type="submit" tabindex="12">GUARDAR</button>
+      </h4>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+
+
+<div class="modal login fade scrollbarForModal" style="pointer-events: all !important;" id="responsabilidades"
+  tabindex="-1" role="dialog" aria-labelledby="steps">
+  <div class="modal-dialog big ">
+    <div class="modal-content ">
+      <div class="modal-body ">
+        <button type="button" data-dismiss="modal">
+          <span></span>
+        </button>
+        <div class="admin-form">
+          <h2 id="title1" class="pull-left full-width text-center">Por Favor Escoja las Responsbilidades</h2>
+          <br>
+        </div>
+        <div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check01" name="checkbox01" type="checkbox"> 01. Aporte especial para la
+              administración de justicia </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check02" name="checkbox02" type="checkbox"> 02. Gravamen a los movimientos
+              financieros</label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check03" name="checkbox03" type="checkbox"> 03. Impuesto al patrimonio</label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check04" name="checkbox04" type="checkbox"> 04. Impuesto de renta y
+              complementario régimen especial </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check05" name="checkbox05" type="checkbox"> 05. Impuesto de renta y
+              complementario régimen ordinario </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check06" name="checkbox06" type="checkbox"> 06. Ingresos y patrimonio </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check07" name="checkbox07" type="checkbox"> 07. Retención en la fuente a título
+              de renta </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check08" name="checkbox08" type="checkbox"> 08. Retención timbre nacional
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check09" name="checkbox09" type="checkbox"> 09. Retención en la fuente en el
+              impuesto sobre las ventas </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check10" name="checkbox10" type="checkbox"> 10. Usuario aduanero </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check13" name="checkbox13" type="checkbox"> 13. Gran contribuyente </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check14" name="checkbox14" type="checkbox"> 14. Informante de exógena </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check15" name="checkbox15" type="checkbox"> 15. Autorretenedor </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check16" name="checkbox16" type="checkbox"> 16. Obligación a facturar por
+              ingresos bienes y/o servicios excluidos </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check17" name="checkbox17" type="checkbox"> 17. Profesionales de compra y venta
+              de divisas </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check18" name="checkbox18" type="checkbox"> 18. Precios de transferencia </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check19" name="checkbox19" type="checkbox"> 19. Productor de bienes y/o servicios
+              exentos (incluye exportadores) </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check20" name="checkbox20" type="checkbox"> 20. Obtención NIT Dto. 3050 de 1997
+              (Art. 3o) </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check21" name="checkbox21" type="checkbox"> 21. Declarar ingreso o salida del
+              país de divisas o moneda legal </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check22" name="checkbox22" type="checkbox"> 22. Obligado a declarar a nombre de
+              terceros </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check23" name="checkbox23" type="checkbox"> 23. Agente de retención en ventas
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check24" name="checkbox24" type="checkbox"> 24. Declaración consolidada precios
+              de transferencia </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check26" name="checkbox26" type="checkbox"> 26. Declaración individual precios de
+              transferencia </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check32" name="checkbox32" type="checkbox"> 32. Impuesto Nacional a la Gasolina y
+              al ACPM </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check35" name="checkbox35" type="checkbox"> 35. Impuesto sobre la renta para la
+              equidad CREE </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check36" name="checkbox36" type="checkbox"> 36. Establecimiento permanente
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check37" name="checkbox37" type="checkbox"> 37. Clientes seleccionados por
+              resolución del Director General como obligados a facturar electrónicamente </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check38" name="checkbox38" type="checkbox"> 38. Obligado a Facturar
+              Electrónicamente </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check39" name="checkbox39" type="checkbox"> 39. Proveedor de Servicios
+              Tecnológicos PST </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check40" name="checkbox40" type="checkbox"> 40. Impuesto a la Riqueza </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check41" name="checkbox41" type="checkbox"> 41. Declaración anual de activos en
+              el exterior </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check42" name="checkbox42" type="checkbox"> 42. Obligado a Llevar Contabilidad
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check47" name="checkbox47" type="checkbox"> 47. Régimen simple de tributación
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check48" name="checkbox48" type="checkbox"> 48. Impuesto sobre las ventas
+            </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check49" name="checkbox49" type="checkbox"> 49. No responsable de IVA</label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check50" name="checkbox50" type="checkbox"> 50. No responsable de consumo
+              restaurantes y bares</label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check51" name="checkbox51" type="checkbox"> 51. Agente de retención impoconsumo
+              de bienes inmuebles </label>
+          </div>
+          <div class="col-xs-12 pull-left">
+            <label><input [(ngModel)]="check52" name="checkbox52" type="checkbox"> 52. Facturador Electronico </label>
+          </div>
+        </div>
+
+        <div class=" button-p">
+          <button data-dismiss="modal" class="btn gray m-0 m-left">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <a href="javascript:void(0)">Nombre de la company</a>
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+  </div>
+  <div class="admin-form text-center">
+    <div class="edit-admin-profile">
+      <h2 class="text-left">Registro Empresa</h2>
+      <form #companyRegistry="ngForm" (ngSubmit)="sendCompanyRegistry(companyRegistry)">
+        <div class="form-group col-xs-12">
+          <div class="col-xs-12">
+            <div class="material-input" [class.has-error]="!registryName.valid && !registryName.pristine">
+              <input type="text" required="" name="name" #registryName="ngModel" [(ngModel)]="companyRegistryModel.name"
+                     tabindex="1">
+              <label>
+                <span>Nombre de la Empresa *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown" [class.has-error]="errorDocumentType">
+              <label>Tipo de documento *</label>
+              <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" tabindex="2">
+                {{selectTypeDocument}}
+                <span class="caret"></span>
+              </a>
+              <span class="help-block text-left">Campo requerido</span>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let d of documentsTypes"><a (click)="onSelectTypeDocument(d)">{{d.tipo}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="material-input"
+                 [class.has-error]="(errorDocumento || !registryDocument.valid) && !registryDocument.pristine ">
+              <input type="number" required="" name="document" #registryDocument="ngModel"
+                     [(ngModel)]="companyRegistryModel.numberDocument" tabindex="3">
+              <label>
+                <span>Numero de Documento *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown" [class.has-error]="errorCountry">
+              <label>Pais *</label>
+              <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" tabindex="4">
+                {{selectCountry}}
+                <span class="caret"></span>
+              </a>
+              <span class="help-block text-left has_error">Campo requerido</span>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let d of country"><a (click)="onSelectCountry(d)">{{d.nombre}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown " [class.has-error]="errorCity">
+              <label>Ciudad *</label>
+              <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" tabindex="5">
+                {{selectCity}}
+                <span class="caret"></span>
+              </a>
+              <span class="help-block text-left has_error">Campo requerido</span>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let d of cities"><a (click)="onSelectCity(d)">{{d.nombre}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="col-xs-6">
+            <div class="material-input" [class.has-error]="!registryAddress.valid && !registryAddress.pristine">
+              <input type="text" required="" name="address" #registryAddress="ngModel"
+                     [(ngModel)]="companyRegistryModel.address" tabindex="6">
+              <label>
+                <span>Dirección *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="material-input"
+                 [class.has-error]="(!registryEmail.valid || !validEmail()) && !registryEmail.pristine">
+              <input type="text" required="" name="email" #registryEmail="ngModel"
+                     [(ngModel)]="companyRegistryModel.email" tabindex="7">
+              <label>
+                <span>Email *</span>
+              </label>
+              <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group col-xs-12">
+          <div class="col-xs-6">
+            <div class="dropdown material-dropdown ">
+              <label>Regimen *</label>
+              <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="true" tabindex="8">
+                {{selectRegimen}}
+                <span class="caret"></span>
+              </a>
+              <span class="help-block text-left has_error">Campo requerido</span>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li *ngFor="let d of regimens"><a (click)="onSelectRegimen(d)">{{d.nombre}}</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="material-input" [class.has-error]="!registryTelephone.valid && !registryTelephone.pristine">
+              <input type="number" required="" id="telephone" name="telephone" #registryTelephone="ngModel"
+                     [(ngModel)]="companyRegistryModel.telephone" tabindex="9">
+              <label>
+                <span>Telefono *</span>
+              </label>
+              <span class="help-block text-left">Campo requerido</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <h5 id="" class="text-left info-message">Minimo 8 caracteres, una mayuscula o una minuscula y un número</h5>
+        </div>
+        <div class="col-xs-12">
+          <div class="check pull-left" [class.has-error]="!conditionRegistryValid ">
+            <input type="checkbox" value="None" id="kansas-check-1" #registryConditions name="registryConditions"
+                   [(ngModel)]="companyRegistryModel.conditions" tabindex="10">
+            <label for="kansas-check-1"></label>
+            <p>Al registrarme acepto que mi información puede ser usada de acuerdo a los <a
+              href="http://helisa.com/terminos-y-condiciones.php" target="_blank">Términos y Condiciones</a> y su <a
+              href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Políticas de
+              Tratamientos de Datos Personales</a></p>
+            <span class="help-block text-left">Para continuar debe aceptar los terminos y condiciones</span>
+          </div>
+        </div>
+        <div class="col-xs-12 text-center">
+          <h4>
+            <button class="light-blue-button" type="button" (click)="back()" tabindex="11">CANCELAR</button>
+          </h4>
+          <h4>
+            <button class="light-blue-button" type="submit" tabindex="12">GUARDAR</button>
+          </h4>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container text-center">
+    <h6>© 2016 Helisa. Todos los derechos reservados | <a href="http://helisa.com/terminos-y-condiciones.php"
+                                                          target="_blank">Términos y Condiciones</a> - <a
+      href="http://helisa.com/politica-de-tratamiento-de-datos-personales.php" target="_blank">Aviso Legal</a></h6>
+    <h6>v1.0</h6>
+  </div>
+</footer>
+-->

@@ -1,0 +1,8 @@
+html {
+    background: red;
+}
+
+/* HIDDEN */
+.wufoo .info {
+    display: none;
+}

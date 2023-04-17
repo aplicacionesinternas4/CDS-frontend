@@ -1,0 +1,122 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <a class="back-btn" (click)="back()">
+        <span class="icon"></span>
+      </a>
+      <h5 class="pull-left">
+        <!--<a href="javascript:void(0)">Nombre de la company</a>-->
+      </h5>
+      <h5 class="pull-right">
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+      </h5>
+    </div>
+  </div>
+  <div class="admin-form text-center">
+    <div class="edit-admin-profile">
+      <h2 class="text-left">Editar Usuario</h2>
+      <form role="form" class="row text-center"  (ngSubmit)="save()">
+        <div class="text-left">
+          <div class="col-xs-12 col-sm-6">
+            <div class="material-input">
+              <input type="text" required="" [(ngModel)]="userApp.name" name="nombre1" tabindex="1">
+              <label>
+                <span>Nombre</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <div class="material-input">
+              <input type="text" required=""  [(ngModel)]="userApp.lastName"  name="apellido1" tabindex="2">
+              <label>
+                <span>Apellido</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <div class="material-input" [class.has-error]=" !email.pristine && (!email.valid  || !validEmail())">
+              <input type="text" required=""  [(ngModel)]="userApp.email" name="empresa" #email="ngModel" tabindex="3">
+              <label>
+                <span>Email</span>
+              </label>
+              <span class="help-block text-left">Dirección de correo electrónico no válida</span>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <div class="material-input">
+              <input type="text" required="" [(ngModel)]="userApp.phone" name="telefono" tabindex="4">
+              <label>
+                <span>Teléfono</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <div class="dropdown material-dropdown">
+              <label>Tipo de documento</label>
+              <select class="selectpicker selects"  id="dropdownMenu5" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="true" tabindex="5" name="_embedded.typeDocument" #registryName="ngModel" [(ngModel)]="userApp._embedded.typeDocument.codigo">
+                <option *ngFor="let d of documentsTypes" value="{{d.codigo}}">{{d.tipo}}</option>
+              </select>
+
+              <!--<a class="btn btn-default dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="caret"></span>
+                {{userApp._embedded.typeDocument?.tipo}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li *ngFor="let d of documentsTypes" (click)="userApp._embedded.typeDocument=d;"> <a>{{d.tipo}}</a></li>
+              </ul>-->
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-6">
+            <div class="material-input">
+              <input type="text" required=""  [(ngModel)]="userApp.identification"  name="Nit" tabindex="6">
+              <label>
+                <span>Identificación</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <button class="btn" type="submit">Guardar</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+

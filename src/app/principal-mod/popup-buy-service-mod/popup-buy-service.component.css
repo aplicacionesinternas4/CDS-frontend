@@ -1,0 +1,47 @@
+.recurring {
+  width: 100%;
+  margin-bottom: 12px;
+  float: left;
+}
+
+.recurring input {
+  float: left;
+}
+
+.recurring label {
+  float: left;
+  width: calc(100% - 20px);
+  padding-left: 8px;
+  font-size: 15px;
+}
+
+.admin-description-section table {
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+
+.admin-description-section img {
+  top: -50px;
+}
+
+.form-group {
+  margin-bottom: 0px;
+}
+
+.validate-btn {
+  margin: 20px 0 35px !important;
+}
+
+
+.material-input.has-valid input + label ~ span,
+.material-input.has-valid textarea + label ~ span {
+  display: block;
+  color: #00AA0C;
+}
+.material-input.has-valid input,
+.material-input.has-valid textarea {
+  -moz-box-shadow: 0 1px 0 0 #00AA0C;
+  -webkit-box-shadow: 0 1px 0 0 #00AA0C;
+  box-shadow: 0 1px 0 0 #00AA0C;
+  border-bottom: 1px solid #00AA0C;
+}

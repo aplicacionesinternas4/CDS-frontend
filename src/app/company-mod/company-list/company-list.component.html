@@ -1,0 +1,256 @@
+<header>
+  <div class="header-bottom pull-left full-width">
+    <div class="container">
+      <nav class="navbar">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="button-service-center visible-xs" href="mi-helisa.html"></a>
+          <a class="logo pull-left">
+            <img src="images/CDS_LOGO.png">
+          </a>
+          <div class="login text-right hidden-xs">
+            <div>
+              <a class="visible-sm"><br></a>
+            </div>
+          </div>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container admin margin-company">
+  <div class="start">
+    <div class="top top2">
+      <h5 class="pull-left">
+        <a>
+          <span (click)="goToEditUserApp()">
+            {{fullNameUser}}
+          </span>
+        </a>
+      </h5>
+      <h5 class="pull-right">
+        <a class="add-company" *ngIf="validation" (click)="goCreatioCompany()">
+          <span class="icon"></span>
+          <span class="hidden-xs">Agregar Empresa</span>
+        </a>
+        <a class="add-company" *ngIf="validation2" (click)="goUserEdition()">
+          <span class="icon"></span>
+          <span class="hidden-xs">Usuario</span>
+        </a>
+        <a class="cambio-password"data-toggle="modal" data-target="#faragod">
+          <span class="icon"></span>
+          <span class="hidden-xs">Cambio de Contraseña</span>
+        </a>
+        <span style="color: transparent; pointer-events: none;">....</span>
+        <a class="close-session">
+          <span class="icon"></span>
+          <span class="hidden-xs" (click)="logout()">Cerrar Sesión</span>
+        </a>
+       
+      </h5>
+    </div>
+        <!-- scorpio -->
+
+
+
+ <!--<span  data-toggle="modal" data-target="#faragod" style="background-color: transparent; border:transparent; cursor: pointer;"><span><img src="images\llave.png" alt="" style="max-width: 30px; max-height: 30px;"></span> Cambio de Contraseña</span>-->
+<div class="modal login fade scrollbarForModal" style="pointer-events: all !important; margin-left: 20%; margin-top: 3%;" id="faragod"
+  tabindex="1" role="dialog" aria-labelledby="steps;" >
+  <div class="modal-dialog big ">
+    <div class="modal-content" style="max-width: 4000px;">
+      <div class="modal-body" style="max-width: 400px; ">
+        <button type="button" data-dismiss="modal" style="border: none; background: none;">
+          <span></span>
+        </button>
+            <div class="" style="max-width: 400px; ">
+          <h2 style="color: white;">Cambio de contraseña</h2>
+          <br>
+              </div>
+              <div>
+                <br>
+                 <app-loginverification>
+          
+                 </app-loginverification>
+                 <br><br><br> <br><br><br><br><br><br>
+              </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<button data-toggle="modal" data-target="#faragod2" id="faragod3" style="display: none;" ></button>
+<div class="modal login fade scrollbarForModal" style="pointer-events: all !important; margin-left: 20%; margin-top: 3%;" id="faragod2"
+  tabindex="1" role="dialog" aria-labelledby="steps;" >
+  <div class="modal-dialog big ">
+    <div class="modal-content" >
+      <div class="modal-body" style="max-width: 443px;">
+        <button type="button" data-dismiss="modal" style="border: none; background: none;">
+          <span></span>
+        </button>
+            <div class="" style="max-width: 400px;">
+          <h2 style="color: white;"  >Cambio de contraseña</h2>
+          <br>
+              </div>
+              <div  style="max-width: 900px;">
+                 <app-changepassword>
+                   
+                 </app-changepassword>
+              </div>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<!-- scorpio -->
+  
+    <div class="bottom">
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <h2>Mis Empresas</h2>
+        </div>
+      </div>
+
+      <div class="pull-right">
+
+      </div>
+
+
+      <div class="pull-right" *ngIf="validation3">
+
+        <div class="material-input">
+          <div class="col-xs-16">
+            <div class="col-xs-1">
+              <button (click)="clean()" *ngIf="searchTxt"
+                style="border-style: hidden;margin: 0px;background-color: transparent; padding-top: 3px; padding-left:10px;">X</button>
+            </div>
+            <div class="col-xs-8">
+              <input (keyup)="changeValue()" type="number" id="inputSearch" name="search" placeholder="Buscar NIT" [(ngModel)]="searchTxt">
+            </div>
+            <div class="col-xs-3">
+                <button class="btn" *ngIf="searchTxt" (click)="searchCompanyByNit()" name="buttonSearch"
+                  value="Buscar">Buscar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--<div class="pull-right" style="margin-right: 20px;">-->
+      <!--  <a (click)="devolverPaginado()">-->
+      <!--    <span>-->
+      <!--      <b><<<</b>-->
+      <!--    </span>-->
+      <!--  </a>-->
+      <!--</div>-->
+
+
+      <div class="scrollBar scrollbar-vertical">
+        <div class="scrollBar-mask"></div>
+        <div class="scrollBar-wrap">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th class="visible-md visible-lg">Nro. Documento</th>
+                <th class="actions">Acciones</th>
+                <!--<th class="hidden-xs">País</th>-->
+                <!--<th class="hidden-xs">Ciudad</th>-->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usuario of usuarios">
+                <td (click)="selectCompany(usuario)">{{ usuario.nombre1 }}</td>
+                <td (click)="selectCompany(usuario)" class="visible-md visible-lg">{{ usuario.tipoDocumentoObj.tipo+ '
+                  '+usuario.nit }}</td>
+                <td (click)="editCompany(usuario)">
+                  <span class="edit-icon"></span>
+                </td>
+                <!--<td class="hidden-xs">Algo</td>-->
+                <!--<td class="hidden-xs">Algo</td>-->
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="emptyList" class="empty-case">
+            <span class="icon add-icon" (click)="goCreatioCompany()"></span>
+            <h4>Agregar Empresa</h4>
+          </div>
+          <div *ngIf="loading" class="load-wrap">
+            <div class="load"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-16 pull-right" *ngIf="validation3">
+        <input type="button" value="←" (click)="devolverPaginado()" style="border:none; background-color: transparent; color: #ec008c; font-size: 16px ;font-weight: bold;">
+        
+        <label style="color:e5007e;">Pagina  Nº  {{contador}}</label>
+        <input type="button"  (click)="seguirPaginado()" value="→" style="border:none; background-color: transparent; color: #ec008c; font-size: 16px ;font-weight: bold;">
+       
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal login fade" id="steps" tabindex="-1" role="dialog" aria-labelledby="steps">
+  <div class="modal-dialog big">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" data-dismiss="modal">
+          <span></span>
+        </button>
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <div>
+                <h1 class="text-center">BIENVENIDO</h1>
+                <h3 class="text-center">Nombre</h3>
+                <h5>En este momento usted no cuenta con empresas registradas en el Centro de Servicios, lo invitamos a
+                  registrarse y agilizar sus procesos posventa. Siga los siguientes pasos:</h5>
+              </div>
+            </div>
+            <div class="item">
+              <div>
+                <h5>1- Ingrese a la opción <b>Agregar Empresa</b>, allí diligencie los campos con la información de su
+                  empresa.</h5>
+              </div>
+            </div>
+            <div class="item">
+              <div>
+                <h5>2- Seleccione en <b>Mis empresas</b> la empresa con la que desea recibir los servicios y explore las
+                  opciones para adquirir soporte e implementación, solicitar asistencia remota, entre otras facilidades.
+                </h5>
+              </div>
+            </div>
+            <div class="item">
+              <div>
+                <h5>3- Seleccione la opción <b>Solicitar Servicio</b> y reciba rápidamente contacto de nuestros expertos
+                  Helisa.</h5>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <a class="pull-left button" href="#carousel-example-generic" role="button" data-slide="prev">
+            atras
+          </a>
+          <a class="pull-right button" href="#carousel-example-generic" role="button" data-slide="next">
+            siguiente
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

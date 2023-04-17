@@ -1,0 +1,8 @@
+ <div class="update-content consulting">
+    <ul class="list-unstyled pull-left full-width services-list">
+      <li *ngFor="let s of listServices" class="update-list">
+        <div style="text-align: left;  width: 100%;" [innerHTML]="s.textSmall"></div>
+        <a (click)="goToPage(s)" *ngIf="s.textSmall">{{getLabelButton(s)}}</a>
+      </li>
+    </ul>
+  </div>
